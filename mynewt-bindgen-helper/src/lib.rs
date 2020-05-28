@@ -19,7 +19,6 @@ extern crate bindgen;
 
 use std::env;
 use std::path::PathBuf;
-use std::env::VarError;
 
 fn get_mynewt_core_path() -> Result<PathBuf, String> {
     match env::var("CORE_PATH") {

@@ -94,7 +94,7 @@ impl OutputPin {
 
     /// Write a value (either high or low) to the specified pin.
     pub fn write(&mut self, value: PinState) {
-        unsafe { mynewt_core_hw_hal_bindgen::hal_gpio_write(self.gpio.pin, value as i32); }
+        unsafe { mynewt_core_hw_hal_bindgen::hal_gpio_write(self.gpio.pin, value.as_i32()); }
     }
 
     /// Toggles the specified pin.

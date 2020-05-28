@@ -17,9 +17,6 @@
 
 extern crate mynewt_bindgen_helper;
 
-use std::env;
-use std::path::PathBuf;
-
 fn main() {
     let header_files = vec!(
         "hw/hal/include/hal/hal_gpio.h",
