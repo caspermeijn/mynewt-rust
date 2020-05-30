@@ -36,12 +36,25 @@ pub fn generate(header_files: Vec<&str>) -> Result<(), String> {
     }).collect();
 
     let mut builder = bindgen::Builder::default()
+        .clang_arg("--target=thumbv7m-none-eabi")
         .use_core()
         .ctypes_prefix("cty")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks));
     for header_path in header_paths {
         builder = builder.header(header_path.to_str().unwrap());
         println!("cargo:rerun-if-changed={}", header_path.to_str().unwrap());
+    }
+    // If available, set the include directories as mynewt would do
+    if let Ok(include_path_list) = env::var("MYNEWT_INCLUDE_PATH") {
+        for include_path in include_path_list.split(":") {
+            builder = builder.clang_arg("--include-directory=".to_owned()+include_path);
+        }
+    }
+    // If available, set the CFLAGS as mynewt would do
+    if let Ok(cflag_list) = env::var("MYNEWT_CFLAGS") {
+        for cflag in cflag_list.split(" ") {
+            builder = builder.clang_arg(cflag);
+        }
     }
 
     builder.generate().map_err(|_| {"Failed to generate"})?
