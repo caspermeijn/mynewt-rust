@@ -64,7 +64,7 @@ impl Spi {
 
     pub fn tx(&self, tx_buf: &[u8]) -> Result<(), i32> {
         let rx_buf: [u8; 128] = [0; 128];
-        assert!(tx_buf.len() < rx_buf.len());
+        assert!(tx_buf.len() <= rx_buf.len());
         let length = tx_buf.len() as i32;
         let tx_buf = tx_buf.as_ptr() as *mut core::ffi::c_void;
         let rx_buf = rx_buf.as_ptr() as *mut core::ffi::c_void;
