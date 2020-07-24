@@ -21,4 +21,5 @@
 extern crate mynewt_core_hw_hal_bindgen;
 
 pub mod gpio;
+pub mod spi;
 mod external_hal;

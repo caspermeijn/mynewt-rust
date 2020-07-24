@@ -19,7 +19,19 @@ extern crate mynewt_bindgen_helper;
 
 fn main() {
     let header_files = vec!(
+        "hw/hal/include/hal/hal_bsp.h",
+        "hw/hal/include/hal/hal_debug.h",
+        "hw/hal/include/hal/hal_flash.h",
+        "hw/hal/include/hal/hal_flash_int.h",
         "hw/hal/include/hal/hal_gpio.h",
+        "hw/hal/include/hal/hal_i2c.h",
+        "hw/hal/include/hal/hal_nvreg.h",
+        "hw/hal/include/hal/hal_os_tick.h",
+        "hw/hal/include/hal/hal_spi.h",
+        "hw/hal/include/hal/hal_system.h",
+        "hw/hal/include/hal/hal_timer.h",
+        "hw/hal/include/hal/hal_uart.h",
+        "hw/hal/include/hal/hal_watchdog.h",
     );
 
     let result = mynewt_bindgen_helper::generate(header_files);

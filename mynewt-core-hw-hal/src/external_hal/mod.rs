@@ -17,4 +17,5 @@
 
 extern crate embedded_hal;
 
+pub mod blocking;
 pub mod digital;
