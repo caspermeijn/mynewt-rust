@@ -21,4 +21,5 @@
 extern crate mynewt_core_kernel_os_bindgen;
 
 pub mod time;
+pub mod task;
 mod external_hal;

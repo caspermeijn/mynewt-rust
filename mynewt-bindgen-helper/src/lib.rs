@@ -38,6 +38,7 @@ pub fn generate(header_files: Vec<&str>) -> Result<(), String> {
     let mut builder = bindgen::Builder::default()
         .clang_arg("--target=thumbv7m-none-eabi")
         .use_core()
+        .derive_default(true)
         .ctypes_prefix("cty")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks));
     for header_path in header_paths {
