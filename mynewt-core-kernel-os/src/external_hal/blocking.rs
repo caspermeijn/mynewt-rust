@@ -31,4 +31,3 @@ impl embedded_hal::blocking::delay::DelayUs<u32> for crate::time::Delay {
         unsafe { mynewt_core_kernel_os_bindgen::os_cputime_delay_usecs(us) };
     }
 }
-

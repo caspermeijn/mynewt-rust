@@ -18,7 +18,7 @@
 extern crate mynewt_bindgen_helper;
 
 fn main() {
-    let header_files = vec!(
+    let header_files = vec![
         "kernel/os/include/os/endian.h",
         "kernel/os/include/os/mynewt.h",
         "kernel/os/include/os/os.h",
@@ -42,7 +42,7 @@ fn main() {
         "kernel/os/include/os/os_trace_api.h",
         "kernel/os/include/os/queue.h",
         "kernel/os/include/os/util.h",
-    );
+    ];
 
     let result = mynewt_bindgen_helper::generate(header_files);
     if let Err(e) = result {

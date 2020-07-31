@@ -22,8 +22,10 @@ use std::path::PathBuf;
 
 fn get_mynewt_core_path() -> Result<PathBuf, String> {
     match env::var("CORE_PATH") {
-        Ok(mynewt_core_path) => { Ok(PathBuf::from(mynewt_core_path)) },
-        Err(_) => { Err(String::from("Environment variable CORE_PATH should be set to a copy of apache-mynewt-core")) },
+        Ok(mynewt_core_path) => Ok(PathBuf::from(mynewt_core_path)),
+        Err(_) => Err(String::from(
+            "Environment variable CORE_PATH should be set to a copy of apache-mynewt-core",
+        )),
     }
 }
 
@@ -31,9 +33,10 @@ pub fn generate(header_files: Vec<&str>) -> Result<(), String> {
     let mynewt_core_path = get_mynewt_core_path()?;
     let out_path = PathBuf::from(env::var("OUT_DIR").unwrap()).join("bindings.rs");
 
-    let header_paths: Vec<PathBuf> = header_files.iter().map(|header_file| {
-        mynewt_core_path.join(header_file)
-    }).collect();
+    let header_paths: Vec<PathBuf> = header_files
+        .iter()
+        .map(|header_file| mynewt_core_path.join(header_file))
+        .collect();
 
     let mut builder = bindgen::Builder::default()
         .clang_arg("--target=thumbv7m-none-eabi")
@@ -48,7 +51,7 @@ pub fn generate(header_files: Vec<&str>) -> Result<(), String> {
     // If available, set the include directories as mynewt would do
     if let Ok(include_path_list) = env::var("MYNEWT_INCLUDE_PATH") {
         for include_path in include_path_list.split(":") {
-            builder = builder.clang_arg("--include-directory=".to_owned()+include_path);
+            builder = builder.clang_arg("--include-directory=".to_owned() + include_path);
         }
     }
     // If available, set the CFLAGS as mynewt would do
@@ -58,8 +61,11 @@ pub fn generate(header_files: Vec<&str>) -> Result<(), String> {
         }
     }
 
-    builder.generate().map_err(|_| {"Failed to generate"})?
-        .write_to_file(out_path).map_err(|e| { format!("Failed to write output: {}", e) })?;
+    builder
+        .generate()
+        .map_err(|_| "Failed to generate")?
+        .write_to_file(out_path)
+        .map_err(|e| format!("Failed to write output: {}", e))?;
 
     Ok(())
 }

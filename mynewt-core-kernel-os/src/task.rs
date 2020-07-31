@@ -17,8 +17,7 @@
 
 use core::convert::TryInto;
 
-pub struct Task
-{
+pub struct Task {
     task: Option<mynewt_core_kernel_os_bindgen::os_task>,
     stack: [mynewt_core_kernel_os_bindgen::os_stack_t; 4000],
 }
@@ -45,10 +44,17 @@ impl Task {
         let stack_bottom = self.stack.as_mut_ptr();
         let stack_size = self.stack.len().try_into().unwrap();
 
-        let result = unsafe { mynewt_core_kernel_os_bindgen::os_task_init(
-            task, name, Some(callback), arg, prio,
-            !0, //TODO: mynewt_core_kernel_os_bindgen::OS_WAIT_FOREVER,
-            stack_bottom, stack_size)
+        let result = unsafe {
+            mynewt_core_kernel_os_bindgen::os_task_init(
+                task,
+                name,
+                Some(callback),
+                arg,
+                prio,
+                !0, //TODO: mynewt_core_kernel_os_bindgen::OS_WAIT_FOREVER,
+                stack_bottom,
+                stack_size,
+            )
         };
 
         if result == 0 {
@@ -59,15 +65,14 @@ impl Task {
     }
 
     unsafe extern "C" fn task_callback<F>(arg: *mut cty::c_void)
-        where
-            F: Fn(),
-            F: Send + 'static,
+    where
+        F: Fn(),
+        F: Send + 'static,
     {
         let func_ptr = arg as *mut F;
-        let func = unsafe {&mut *func_ptr };
+        let func = unsafe { &mut *func_ptr };
         func();
     }
-
 }
 
 impl Drop for Task {
@@ -75,4 +80,3 @@ impl Drop for Task {
         unimplemented!()
     }
 }
-
