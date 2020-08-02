@@ -18,9 +18,7 @@
 extern crate mynewt_bindgen_helper;
 
 fn main() {
-    let header_files = vec!(
-        "hw/bsp/pinetime/include/bsp/bsp.h",
-    );
+    let header_files = vec!["hw/bsp/pinetime/include/bsp/bsp.h"];
 
     let result = mynewt_bindgen_helper::generate(header_files);
     if let Err(e) = result {

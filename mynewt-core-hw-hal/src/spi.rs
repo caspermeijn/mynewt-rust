@@ -35,17 +35,24 @@ impl Spi {
                 data_mode: 0,
                 data_order: 0,
                 word_size: 0,
-            }
+            },
         }
     }
 
-    pub fn config(&mut self, data_mode: DataMode, data_order: DataOrder, word_size: WordSize, baudrate: u32) -> Result<(), i32> {
+    pub fn config(
+        &mut self,
+        data_mode: DataMode,
+        data_order: DataOrder,
+        word_size: WordSize,
+        baudrate: u32,
+    ) -> Result<(), i32> {
         self.settings.data_mode = data_mode as u8;
         self.settings.data_order = data_order as u8;
         self.settings.word_size = word_size as u8;
         self.settings.baudrate = baudrate;
 
-        let result = unsafe { mynewt_core_hw_hal_bindgen::hal_spi_config(self.num, &mut self.settings) };
+        let result =
+            unsafe { mynewt_core_hw_hal_bindgen::hal_spi_config(self.num, &mut self.settings) };
         if result == 0 {
             Ok(())
         } else {
@@ -68,7 +75,8 @@ impl Spi {
         let length = tx_buf.len() as i32;
         let tx_buf = tx_buf.as_ptr() as *mut core::ffi::c_void;
         let rx_buf = rx_buf.as_ptr() as *mut core::ffi::c_void;
-        let result = unsafe { mynewt_core_hw_hal_bindgen::hal_spi_txrx(self.num, tx_buf, rx_buf, length) };
+        let result =
+            unsafe { mynewt_core_hw_hal_bindgen::hal_spi_txrx(self.num, tx_buf, rx_buf, length) };
         if result == 0 {
             Ok(())
         } else {
@@ -76,4 +84,3 @@ impl Spi {
         }
     }
 }
-

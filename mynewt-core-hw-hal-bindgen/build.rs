@@ -18,7 +18,7 @@
 extern crate mynewt_bindgen_helper;
 
 fn main() {
-    let header_files = vec!(
+    let header_files = vec![
         "hw/hal/include/hal/hal_bsp.h",
         "hw/hal/include/hal/hal_debug.h",
         "hw/hal/include/hal/hal_flash.h",
@@ -32,7 +32,7 @@ fn main() {
         "hw/hal/include/hal/hal_timer.h",
         "hw/hal/include/hal/hal_uart.h",
         "hw/hal/include/hal/hal_watchdog.h",
-    );
+    ];
 
     let result = mynewt_bindgen_helper::generate(header_files);
     if let Err(e) = result {

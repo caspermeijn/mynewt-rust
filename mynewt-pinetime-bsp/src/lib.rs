@@ -18,7 +18,7 @@
 #![no_std]
 
 use mynewt_core_hw_hal::gpio::{Gpio, OutputPin};
-use mynewt_core_hw_hal::spi::{Spi, DataMode, DataOrder, WordSize};
+use mynewt_core_hw_hal::spi::{DataMode, DataOrder, Spi, WordSize};
 use mynewt_core_kernel_os::time::Delay;
 
 mod binding;
@@ -42,22 +42,27 @@ impl Bsp {
             display_chip_select: None,
             display_data_command: None,
             display_reset: None,
-            spi: None
+            spi: None,
         }
     }
 
     pub fn init(&mut self) {
-        let backlight_low_pin = unsafe{Gpio::new(binding::LCD_BACKLIGHT_LOW_PIN as i32)};
-        let backlight_medium_pin = unsafe{Gpio::new(binding::LCD_BACKLIGHT_MED_PIN as i32)};
-        let backlight_high_pin = unsafe{Gpio::new(binding::LCD_BACKLIGHT_HIGH_PIN as i32)};
+        let backlight_low_pin = unsafe { Gpio::new(binding::LCD_BACKLIGHT_LOW_PIN as i32) };
+        let backlight_medium_pin = unsafe { Gpio::new(binding::LCD_BACKLIGHT_MED_PIN as i32) };
+        let backlight_high_pin = unsafe { Gpio::new(binding::LCD_BACKLIGHT_HIGH_PIN as i32) };
 
-        let display_chip_select_pin = unsafe{Gpio::new(binding::LCD_CHIP_SELECT_PIN as i32)};
-        let display_data_command_pin = unsafe{Gpio::new(binding::LCD_WRITE_PIN as i32)};
-        let display_reset_pin = unsafe{Gpio::new(binding::LCD_RESET_PIN as i32)};
+        let display_chip_select_pin = unsafe { Gpio::new(binding::LCD_CHIP_SELECT_PIN as i32) };
+        let display_data_command_pin = unsafe { Gpio::new(binding::LCD_WRITE_PIN as i32) };
+        let display_reset_pin = unsafe { Gpio::new(binding::LCD_RESET_PIN as i32) };
 
-        let mut spi = unsafe {Spi::new(0)};
+        let mut spi = unsafe { Spi::new(0) };
 
-        spi.config(DataMode::Mode3, DataOrder::MsbFirst, WordSize::Size8bit, 8000);
+        spi.config(
+            DataMode::Mode3,
+            DataOrder::MsbFirst,
+            WordSize::Size8bit,
+            8000,
+        );
 
         self.backlight_low = Some(backlight_low_pin.init_as_output().unwrap());
         self.backlight_medium = Some(backlight_medium_pin.init_as_output().unwrap());

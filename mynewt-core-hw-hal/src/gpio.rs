@@ -41,8 +41,8 @@ impl From<i32> for PinState {
 impl PinState {
     fn as_i32(&self) -> i32 {
         match self {
-            PinState::Low => {0},
-            PinState::High => {1},
+            PinState::Low => 0,
+            PinState::High => 1,
         }
     }
 }
@@ -55,9 +55,7 @@ impl Gpio {
     /// Creates a new instance op Gpio. This should not be done by an opplication, but by a BSP.
     /// This call is unsafe as an incorrect pin number could access unwanted memory.
     pub unsafe fn new(pin: i32) -> Gpio {
-        Gpio {
-            pin,
-        }
+        Gpio { pin }
     }
 
     /// Initialize the GPIO as an output.
@@ -74,9 +72,7 @@ impl OutputPin {
     fn new(gpio: Gpio) -> Result<OutputPin, i32> {
         let result = unsafe { mynewt_core_hw_hal_bindgen::hal_gpio_init_out(gpio.pin, 0) };
         if result == 0 {
-            Ok(OutputPin {
-                gpio,
-            })
+            Ok(OutputPin { gpio })
         } else {
             Err(result)
         }
@@ -94,7 +90,9 @@ impl OutputPin {
 
     /// Write a value (either high or low) to the specified pin.
     pub fn write(&mut self, value: PinState) {
-        unsafe { mynewt_core_hw_hal_bindgen::hal_gpio_write(self.gpio.pin, value.as_i32()); }
+        unsafe {
+            mynewt_core_hw_hal_bindgen::hal_gpio_write(self.gpio.pin, value.as_i32());
+        }
     }
 
     /// Toggles the specified pin.
