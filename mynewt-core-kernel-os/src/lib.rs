@@ -17,6 +17,7 @@
 
 #![feature(never_type)]
 #![feature(alloc_error_handler)]
+#![feature(const_fn)]
 #![no_std]
 
 extern crate mynewt_core_kernel_os_bindgen;

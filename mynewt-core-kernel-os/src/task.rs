@@ -15,11 +15,15 @@
  * limitations under the License.
  */
 
+extern crate alloc;
+
+use alloc::boxed::Box;
 use core::convert::TryInto;
 
 pub struct Task {
     task: Option<mynewt_core_kernel_os_bindgen::os_task>,
     stack: [mynewt_core_kernel_os_bindgen::os_stack_t; 4000],
+    closure: Option<Box<FnMut() + Send + 'static>>,
 }
 
 impl Task {
@@ -27,20 +31,22 @@ impl Task {
         Task {
             task: None,
             stack: [0; 4000],
+            closure: None,
         }
     }
 
     pub fn init<F>(&'static mut self, name: &'static str, mut func: F, prio: u8) -> Result<(), i32>
     where
-        F: Fn(),
+        F: FnMut(),
         F: Send + 'static,
     {
         self.task = Some(mynewt_core_kernel_os_bindgen::os_task::default());
+        self.closure = Some(Box::new(func));
 
-        let task = &mut self.task.unwrap();
+        let task = self.task.as_mut().unwrap();
         let name = name.as_ptr() as *const cty::c_char;
         let callback = Task::task_callback::<F>;
-        let arg = unsafe { &mut func as *mut _ as *mut core::ffi::c_void };
+        let arg = self.closure.as_mut().unwrap().as_mut() as *mut _ as *mut core::ffi::c_void;
         let stack_bottom = self.stack.as_mut_ptr();
         let stack_size = self.stack.len().try_into().unwrap();
 
@@ -66,7 +72,7 @@ impl Task {
 
     unsafe extern "C" fn task_callback<F>(arg: *mut cty::c_void)
     where
-        F: Fn(),
+        F: FnMut(),
         F: Send + 'static,
     {
         let func_ptr = arg as *mut F;
