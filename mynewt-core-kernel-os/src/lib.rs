@@ -16,10 +16,12 @@
  */
 
 #![feature(never_type)]
+#![feature(alloc_error_handler)]
 #![no_std]
 
 extern crate mynewt_core_kernel_os_bindgen;
 
 mod external_hal;
+mod memory;
 pub mod task;
 pub mod time;
