@@ -15,16 +15,12 @@
  * limitations under the License.
  */
 
-#![feature(never_type)]
-#![feature(alloc_error_handler)]
-#![feature(const_fn)]
-#![no_std]
-
-extern crate mynewt_core_kernel_os_bindgen;
-
-pub mod callout;
-mod external_hal;
-mod memory;
-pub mod queue;
-pub mod task;
-pub mod time;
+pub fn loop_default_queue() -> ! {
+    loop {
+        unsafe {
+            mynewt_core_kernel_os_bindgen::os_eventq_run(
+                mynewt_core_kernel_os_bindgen::os_eventq_dflt_get(),
+            );
+        }
+    }
+}
