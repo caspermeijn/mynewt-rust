@@ -31,12 +31,22 @@ fn get_mynewt_core_path() -> Result<PathBuf, String> {
 
 pub fn generate(header_files: Vec<&str>) -> Result<(), String> {
     let mynewt_core_path = get_mynewt_core_path()?;
-    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap()).join("bindings.rs");
-
     let header_paths: Vec<PathBuf> = header_files
         .iter()
         .map(|header_file| mynewt_core_path.join(header_file))
         .collect();
+
+    generate_paths(header_paths)
+}
+
+pub fn generate_wrapper() -> Result<(), String> {
+    let header_paths = vec![PathBuf::from("wrapper.h")];
+
+    generate_paths(header_paths)
+}
+
+pub fn generate_paths(header_paths: Vec<PathBuf>) -> Result<(), String> {
+    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap()).join("bindings.rs");
 
     let mut builder = bindgen::Builder::default()
         .clang_arg("--target=thumbv7m-none-eabi")
