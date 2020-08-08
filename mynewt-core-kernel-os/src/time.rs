@@ -52,6 +52,23 @@ impl TimeOfDay {
         }
     }
 
+    fn get_local_timeval_seconds(&self) -> i64 {
+        let local_offset = self.timezone.tz_minuteswest as i64 * 60 +
+            self.timezone.tz_dsttime as i64 * 60;
+        self.time_val.tv_sec - local_offset
+    }
+    pub fn hours_local(&self) -> u8 {
+        (self.get_local_timeval_seconds() / 60 / 60 % 24) as u8
+    }
+
+    pub fn minutes_local(&self) -> u8 {
+        (self.get_local_timeval_seconds() / 60 % 60) as u8
+    }
+
+    pub fn seconds_local(&self) -> u8 {
+        (self.get_local_timeval_seconds() % 60) as u8
+    }
+
     pub fn hours(&self) -> u8 {
         (self.time_val.tv_sec / 60 / 60 % 24) as u8
     }
