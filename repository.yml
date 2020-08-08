@@ -1,0 +1,4 @@
+repo.name: mynewt-rust
+repo.versions:
+  "0.0.0": "master"
+  "0-latest": "0.0.0"
