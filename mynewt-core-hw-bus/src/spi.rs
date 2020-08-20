@@ -11,6 +11,8 @@ pub struct SpiNode {
     os_dev: *mut mynewt_core_hw_bus_bindgen::os_dev,
 }
 
+unsafe impl Send for SpiNode {}
+
 impl SpiNode {
     pub unsafe fn new(dev_name: &'static str) -> Self {
         assert_eq!(dev_name.chars().last().unwrap(), '\0');
