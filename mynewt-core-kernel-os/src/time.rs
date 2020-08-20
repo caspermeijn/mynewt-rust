@@ -15,6 +15,10 @@
  * limitations under the License.
  */
 
+extern crate alloc;
+
+use alloc::boxed::Box;
+
 pub struct Delay {}
 
 pub struct TimeOfDay {
@@ -53,8 +57,8 @@ impl TimeOfDay {
     }
 
     fn get_local_timeval_seconds(&self) -> i64 {
-        let local_offset = self.timezone.tz_minuteswest as i64 * 60 +
-            self.timezone.tz_dsttime as i64 * 60;
+        let local_offset =
+            self.timezone.tz_minuteswest as i64 * 60 + self.timezone.tz_dsttime as i64 * 60;
         self.time_val.tv_sec - local_offset
     }
     pub fn hours_local(&self) -> u8 {
@@ -79,5 +83,50 @@ impl TimeOfDay {
 
     pub fn seconds(&self) -> u8 {
         (self.time_val.tv_sec % 60) as u8
+    }
+}
+
+pub struct TimeChangeListener {
+    listener: Option<mynewt_core_kernel_os_bindgen::os_time_change_listener>,
+    closure: Option<Box<FnMut() + Send + 'static>>,
+}
+
+impl TimeChangeListener {
+    pub const fn new () -> TimeChangeListener {
+        TimeChangeListener {
+            listener: None,
+            closure: None,
+        }
+    }
+
+    pub fn register<F>(&'static mut self, mut func: F)
+        where
+            F: FnMut(),
+            F: Send + 'static,
+    {
+        assert!(self.listener.is_none());
+
+        self.listener = Some(mynewt_core_kernel_os_bindgen::os_time_change_listener::default());
+        self.closure = Some(Box::new(func));
+
+
+        self.listener.as_mut().unwrap().tcl_fn = Some(Self::callback::<F>);
+        self.listener.as_mut().unwrap().tcl_arg = self.closure.as_mut().unwrap().as_mut() as *mut _ as *mut core::ffi::c_void;
+
+        unsafe {
+            mynewt_core_kernel_os_bindgen::os_time_change_listen(
+                self.listener.as_mut().unwrap(),
+            )
+        };
+    }
+
+    unsafe extern "C" fn callback<F>(_: *const mynewt_core_kernel_os_bindgen::os_time_change_info, arg: *mut core::ffi::c_void)
+        where
+            F: FnMut(),
+            F: Send + 'static,
+    {
+        let func_ptr = arg as *mut F;
+        let func = unsafe { &mut *func_ptr };
+        func();
     }
 }
