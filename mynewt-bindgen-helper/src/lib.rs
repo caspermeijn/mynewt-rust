@@ -19,6 +19,8 @@ extern crate bindgen;
 
 use std::env;
 use std::path::PathBuf;
+use std::process::Command;
+use std::str;
 
 fn get_mynewt_core_path() -> Result<PathBuf, String> {
     match env::var("CORE_PATH") {
@@ -58,6 +60,18 @@ pub fn generate_paths(header_paths: Vec<PathBuf>) -> Result<(), String> {
         builder = builder.header(header_path.to_str().unwrap());
         println!("cargo:rerun-if-changed={}", header_path.to_str().unwrap());
     }
+
+    // If available, set the sysroot as mynewt would do
+    if let Ok(cc_path) = env::var("MYNEWT_CC_PATH") {
+        let cc_output = Command::new(cc_path)
+            .arg("-print-sysroot")
+            .output()
+            .expect("failed to execute gcc");
+        assert!(cc_output.status.success());
+        let sysroot_path = str::from_utf8(&cc_output.stdout).unwrap().trim();
+        builder = builder.clang_arg(format!("--sysroot={}", sysroot_path));
+    }
+
     // If available, set the include directories as mynewt would do
     if let Ok(include_path_list) = env::var("MYNEWT_INCLUDE_PATH") {
         for include_path in include_path_list.split(":") {
