@@ -10,5 +10,5 @@ edition = "2018"
 
 [dependencies]
 mynewt-core-sys-reboot-bindgen = { version = "0.1.0", path = "../mynewt-core-sys-reboot-bindgen" }
-embedded-hal = { version = "0.2.3", features = ["unproven"] }
+mynewt-core-hw-hal-bindgen = { version = "0.1.0", path = "../mynewt-core-hw-hal-bindgen" }
 cty = "0.2.1"

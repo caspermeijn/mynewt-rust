@@ -22,5 +22,3 @@ pub fn conf_load() {
         mynewt_core_sys_config_bindgen::conf_load();
     }
 }
-
-

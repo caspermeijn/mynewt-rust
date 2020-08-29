@@ -18,11 +18,7 @@
 extern crate mynewt_bindgen_helper;
 
 fn main() {
-    let header_files = vec![
-        "sys/reboot/include/reboot/log_reboot.h",
-    ];
-
-    let result = mynewt_bindgen_helper::generate(header_files);
+    let result = mynewt_bindgen_helper::generate_wrapper();
     if let Err(e) = result {
         eprintln!("{}", e);
         std::process::exit(1);

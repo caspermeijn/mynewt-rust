@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: CC0-1.0
 
 [package]
-name = "mynewt-core-hw-bus-bindgen"
+name = "mynewt-core-sys-reboot-bindgen"
 version = "0.1.0"
 authors = ["Casper Meijn <casper@meijn.net>"]
 edition = "2018"

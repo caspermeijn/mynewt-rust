@@ -18,9 +18,7 @@
 extern crate mynewt_bindgen_helper;
 
 fn main() {
-    let header_files = vec![
-        "sys/config/include/config/config.h",
-    ];
+    let header_files = vec!["sys/config/include/config/config.h"];
 
     let result = mynewt_bindgen_helper::generate(header_files);
     if let Err(e) = result {
