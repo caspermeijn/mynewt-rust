@@ -1,0 +1,13 @@
+# Copyright (C) 2020 Casper Meijn <casper@meijn.net>
+#
+# SPDX-License-Identifier: CC0-1.0
+
+[package]
+name = "mynewt-nimble-host-services"
+version = "0.1.0"
+authors = ["Casper Meijn <casper@meijn.net>"]
+edition = "2018"
+
+[dependencies]
+mynewt-nimble-host-services-bindgen = { version = "0.1.0", path = "../mynewt-nimble-host-services-bindgen" }
+cty = "0.2.1"
