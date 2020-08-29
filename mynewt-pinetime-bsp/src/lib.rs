@@ -17,9 +17,9 @@
 
 #![no_std]
 
+use mynewt_core_hw_bus::spi::SpiNode;
 use mynewt_core_hw_hal::gpio::{Gpio, OutputPin};
 use mynewt_core_hw_hal::spi::{DataMode, DataOrder, WordSize};
-use mynewt_core_hw_bus::spi::SpiNode;
 use mynewt_core_kernel_os::time::Delay;
 
 mod binding;

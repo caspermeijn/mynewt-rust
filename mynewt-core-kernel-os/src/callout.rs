@@ -17,8 +17,8 @@
 
 extern crate alloc;
 
-use alloc::boxed::Box;
 use crate::queue::EventQueue;
+use alloc::boxed::Box;
 
 pub struct Callout {
     callout: Option<mynewt_core_kernel_os_bindgen::os_callout>,
@@ -34,9 +34,9 @@ impl Callout {
     }
 
     pub fn init<F>(&'static mut self, mut func: F, event_queue: &'static mut EventQueue)
-        where
-            F: FnMut(),
-            F: Send + 'static,
+    where
+        F: FnMut(),
+        F: Send + 'static,
     {
         self.callout = Some(mynewt_core_kernel_os_bindgen::os_callout::default());
         self.closure = Some(Box::new(func));

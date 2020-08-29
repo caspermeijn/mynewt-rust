@@ -30,18 +30,19 @@ impl BleAdvertiser {
         BleAdvertiser {
             own_addr_type: 0,
             adv_params: None,
-            fields: None
+            fields: None,
         }
     }
 
     pub fn start() {
         unsafe { assert!(mynewt_nimble_host_bindgen::ble_hs_cfg.sync_cb == None) };
 
-        unsafe { mynewt_nimble_host_bindgen::ble_hs_cfg.sync_cb = Some(BleAdvertiser::bleprph_on_sync) };
+        unsafe {
+            mynewt_nimble_host_bindgen::ble_hs_cfg.sync_cb = Some(BleAdvertiser::bleprph_on_sync)
+        };
     }
 
-    fn bleprph_advertise()
-    {
+    fn bleprph_advertise() {
         let mut ble_settings = unsafe { &mut BLE_ADVERTISER };
         ble_settings.adv_params = Some(mynewt_nimble_host_bindgen::ble_gap_adv_params::default());
         ble_settings.fields = Some(mynewt_nimble_host_bindgen::ble_hs_adv_fields::default());
@@ -53,7 +54,8 @@ impl BleAdvertiser {
         let rc = unsafe { mynewt_nimble_host_bindgen::ble_hs_id_infer_auto(0, own_addr_type) };
         assert!(rc == 0);
 
-        fields.flags = mynewt_nimble_host_bindgen::BLE_HS_ADV_F_DISC_GEN as u8 | mynewt_nimble_host_bindgen::BLE_HS_ADV_F_BREDR_UNSUP as u8;
+        fields.flags = mynewt_nimble_host_bindgen::BLE_HS_ADV_F_DISC_GEN as u8
+            | mynewt_nimble_host_bindgen::BLE_HS_ADV_F_BREDR_UNSUP as u8;
 
         fields.set_tx_pwr_lvl_is_present(1);
         fields.tx_pwr_lvl = mynewt_nimble_host_bindgen::BLE_HS_ADV_TX_PWR_LVL_AUTO as i8;
@@ -68,15 +70,30 @@ impl BleAdvertiser {
         assert!(rc == 0);
 
         // /* Begin advertising. */
-        adv_params.conn_mode = mynewt_nimble_host_bindgen::BLE_GAP_CONN_MODE_UND.try_into().unwrap();
-        adv_params.disc_mode = mynewt_nimble_host_bindgen::BLE_GAP_DISC_MODE_GEN.try_into().unwrap();
+        adv_params.conn_mode = mynewt_nimble_host_bindgen::BLE_GAP_CONN_MODE_UND
+            .try_into()
+            .unwrap();
+        adv_params.disc_mode = mynewt_nimble_host_bindgen::BLE_GAP_DISC_MODE_GEN
+            .try_into()
+            .unwrap();
 
-        let rc = unsafe { mynewt_nimble_host_bindgen::ble_gap_adv_start(*own_addr_type, core::ptr::null_mut(), !0/*BLE_HS_FOREVER*/, adv_params, Some(BleAdvertiser::bleprph_gap_event), core::ptr::null_mut()) };
+        let rc = unsafe {
+            mynewt_nimble_host_bindgen::ble_gap_adv_start(
+                *own_addr_type,
+                core::ptr::null_mut(),
+                !0, /*BLE_HS_FOREVER*/
+                adv_params,
+                Some(BleAdvertiser::bleprph_gap_event),
+                core::ptr::null_mut(),
+            )
+        };
         assert!(rc == 0);
     }
 
-    unsafe extern "C" fn bleprph_gap_event(event: *mut mynewt_nimble_host_bindgen::ble_gap_event, arg: *mut cty::c_void) -> i32
-    {
+    unsafe extern "C" fn bleprph_gap_event(
+        event: *mut mynewt_nimble_host_bindgen::ble_gap_event,
+        arg: *mut cty::c_void,
+    ) -> i32 {
         let event = (unsafe { *event });
         match event.type_ as u32 {
             mynewt_nimble_host_bindgen::BLE_GAP_EVENT_CONNECT => {
@@ -84,22 +101,21 @@ impl BleAdvertiser {
                     /* Connection failed; resume advertising. */
                     BleAdvertiser::bleprph_advertise();
                 }
-            },
+            }
             mynewt_nimble_host_bindgen::BLE_GAP_EVENT_DISCONNECT => {
                 /* Connection terminated; resume advertising. */
                 BleAdvertiser::bleprph_advertise();
-            },
+            }
             mynewt_nimble_host_bindgen::BLE_GAP_EVENT_DISCONNECT => {
                 // advertise complete; reason=%d", event->adv_complete.reason);
                 BleAdvertiser::bleprph_advertise();
-            },
+            }
             _ => {}
         }
-        return 0
+        return 0;
     }
 
-    unsafe extern "C" fn bleprph_on_sync()
-    {
+    unsafe extern "C" fn bleprph_on_sync() {
         /* Make sure we have proper identity address set (public preferred) */
         let rc = mynewt_nimble_host_bindgen::ble_hs_util_ensure_addr(0);
         assert!(rc == 0);
@@ -108,4 +124,3 @@ impl BleAdvertiser {
         BleAdvertiser::bleprph_advertise();
     }
 }
-

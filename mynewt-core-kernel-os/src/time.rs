@@ -92,7 +92,7 @@ pub struct TimeChangeListener {
 }
 
 impl TimeChangeListener {
-    pub const fn new () -> TimeChangeListener {
+    pub const fn new() -> TimeChangeListener {
         TimeChangeListener {
             listener: None,
             closure: None,
@@ -100,30 +100,30 @@ impl TimeChangeListener {
     }
 
     pub fn register<F>(&'static mut self, mut func: F)
-        where
-            F: FnMut(),
-            F: Send + 'static,
+    where
+        F: FnMut(),
+        F: Send + 'static,
     {
         assert!(self.listener.is_none());
 
         self.listener = Some(mynewt_core_kernel_os_bindgen::os_time_change_listener::default());
         self.closure = Some(Box::new(func));
 
-
         self.listener.as_mut().unwrap().tcl_fn = Some(Self::callback::<F>);
-        self.listener.as_mut().unwrap().tcl_arg = self.closure.as_mut().unwrap().as_mut() as *mut _ as *mut core::ffi::c_void;
+        self.listener.as_mut().unwrap().tcl_arg =
+            self.closure.as_mut().unwrap().as_mut() as *mut _ as *mut core::ffi::c_void;
 
         unsafe {
-            mynewt_core_kernel_os_bindgen::os_time_change_listen(
-                self.listener.as_mut().unwrap(),
-            )
+            mynewt_core_kernel_os_bindgen::os_time_change_listen(self.listener.as_mut().unwrap())
         };
     }
 
-    unsafe extern "C" fn callback<F>(_: *const mynewt_core_kernel_os_bindgen::os_time_change_info, arg: *mut core::ffi::c_void)
-        where
-            F: FnMut(),
-            F: Send + 'static,
+    unsafe extern "C" fn callback<F>(
+        _: *const mynewt_core_kernel_os_bindgen::os_time_change_info,
+        arg: *mut core::ffi::c_void,
+    ) where
+        F: FnMut(),
+        F: Send + 'static,
     {
         let func_ptr = arg as *mut F;
         let func = unsafe { &mut *func_ptr };

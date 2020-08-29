@@ -31,15 +31,15 @@ pub struct EventQueue {
 
 impl EventQueue {
     pub const fn new() -> EventQueue {
-        EventQueue {
-            event_queue: None,
-        }
+        EventQueue { event_queue: None }
     }
 
     pub fn init(&'static mut self) {
         assert!(self.event_queue.is_none());
         self.event_queue = Some(mynewt_core_kernel_os_bindgen::os_eventq::default());
-        unsafe { mynewt_core_kernel_os_bindgen::os_eventq_init(self.event_queue.as_mut().unwrap()) };
+        unsafe {
+            mynewt_core_kernel_os_bindgen::os_eventq_init(self.event_queue.as_mut().unwrap())
+        };
     }
 
     pub fn run(&'static mut self) {
@@ -47,7 +47,9 @@ impl EventQueue {
         unsafe { mynewt_core_kernel_os_bindgen::os_eventq_run(self.event_queue.as_mut().unwrap()) };
     }
 
-    pub unsafe fn as_raw_mut(&'static mut self) -> &'static mut mynewt_core_kernel_os_bindgen::os_eventq {
+    pub unsafe fn as_raw_mut(
+        &'static mut self,
+    ) -> &'static mut mynewt_core_kernel_os_bindgen::os_eventq {
         self.event_queue.as_mut().unwrap()
     }
 }
