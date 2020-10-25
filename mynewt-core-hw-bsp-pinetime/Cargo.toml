@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: CC0-1.0
 
 [package]
-name = "mynewt-pinetime-bsp"
+name = "mynewt-core-hw-bsp-pinetime"
 version = "0.1.0"
 authors = ["Casper Meijn <casper@meijn.net>"]
 edition = "2018"
