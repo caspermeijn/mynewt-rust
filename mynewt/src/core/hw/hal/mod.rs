@@ -15,5 +15,6 @@
  * limitations under the License.
  */
 
-#[cfg(mynewt_package="@apache-mynewt-core/kernel/os")]
-pub mod os;
+mod external_hal;
+pub mod gpio;
+pub mod spi;

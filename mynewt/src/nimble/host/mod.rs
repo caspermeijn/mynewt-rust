@@ -15,5 +15,6 @@
  * limitations under the License.
  */
 
-pub use mynewt_nimble_host::*;
-pub use mynewt_nimble_host_services as services;
+#[cfg(mynewt_package="@apache-mynewt-nimble/nimble/host")]
+pub mod advertiser;
+pub mod services;

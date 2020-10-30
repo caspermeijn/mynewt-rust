@@ -16,7 +16,7 @@
  */
 
 #[cfg(mynewt_package="@apache-mynewt-core/hw/bus")]
-pub use mynewt_core_hw_bus as bus;
+pub mod bus;
 #[cfg(mynewt_package="@apache-mynewt-core/hw/hal")]
-pub use mynewt_core_hw_hal as hal;
+pub mod hal;
 pub mod bsp;

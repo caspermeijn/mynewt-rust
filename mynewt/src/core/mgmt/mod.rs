@@ -16,4 +16,4 @@
  */
 
 #[cfg(mynewt_package="@apache-mynewt-core/mgmt/imgmgr")]
-pub use mynewt_core_mgmt_imgmgr as imgmgr;
+pub mod imgmgr;

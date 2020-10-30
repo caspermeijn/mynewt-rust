@@ -15,5 +15,27 @@
  * limitations under the License.
  */
 
-#[cfg(mynewt_package="@apache-mynewt-core/kernel/os")]
-pub mod os;
+use crate::core::hw::hal::gpio::*;
+
+impl embedded_hal::digital::v2::OutputPin for OutputPin {
+    type Error = !;
+
+    fn set_low(&mut self) -> Result<(), Self::Error> {
+        self.write(PinState::Low);
+        Ok(())
+    }
+
+    fn set_high(&mut self) -> Result<(), Self::Error> {
+        self.write(PinState::High);
+        Ok(())
+    }
+}
+
+impl embedded_hal::digital::v2::ToggleableOutputPin for OutputPin {
+    type Error = !;
+
+    fn toggle(&mut self) -> Result<(), Self::Error> {
+        self.toggle();
+        Ok(())
+    }
+}

@@ -15,5 +15,13 @@
  * limitations under the License.
  */
 
-#[cfg(mynewt_package="@apache-mynewt-core/kernel/os")]
-pub mod os;
+use super::embedded_hal::blocking::spi::Write;
+use crate::core::hw::hal::spi::Spi;
+
+impl embedded_hal::blocking::spi::Write<u8> for Spi {
+    type Error = i32;
+
+    fn write(&mut self, words: &[u8]) -> Result<(), Self::Error> {
+        self.tx(words)
+    }
+}

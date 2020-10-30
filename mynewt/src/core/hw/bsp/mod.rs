@@ -16,4 +16,4 @@
  */
 
 #[cfg(mynewt_package="@apache-mynewt-core/hw/bsp/pinetime")]
-pub use mynewt_core_hw_bsp_pinetime as pinetime;
+pub mod pinetime;

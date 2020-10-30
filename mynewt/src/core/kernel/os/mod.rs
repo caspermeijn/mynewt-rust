@@ -15,5 +15,9 @@
  * limitations under the License.
  */
 
-#[cfg(mynewt_package="@apache-mynewt-core/kernel/os")]
-pub mod os;
+pub mod callout;
+mod external_hal;
+mod memory;
+pub mod queue;
+pub mod task;
+pub mod time;

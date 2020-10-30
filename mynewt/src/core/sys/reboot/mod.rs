@@ -15,5 +15,8 @@
  * limitations under the License.
  */
 
-#[cfg(mynewt_package="@apache-mynewt-core/kernel/os")]
-pub mod os;
+pub fn reboot_start() {
+    unsafe {
+        mynewt_sys::reboot_start(mynewt_sys::hal_reset_cause());
+    }
+}

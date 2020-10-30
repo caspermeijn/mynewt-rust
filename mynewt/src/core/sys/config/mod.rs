@@ -15,5 +15,8 @@
  * limitations under the License.
  */
 
-#[cfg(mynewt_package="@apache-mynewt-core/kernel/os")]
-pub mod os;
+pub fn conf_load() {
+    unsafe {
+        mynewt_sys::conf_load();
+    }
+}
