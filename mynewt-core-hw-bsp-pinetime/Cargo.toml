@@ -14,6 +14,7 @@ edition = "2018"
 mynewt-core-hw-bus = { version = "0.1.0", path = "../mynewt-core-hw-bus" }
 mynewt-core-hw-hal = { version = "0.1.0", path = "../mynewt-core-hw-hal" }
 mynewt-core-kernel-os = { version = "0.1.0", path = "../mynewt-core-kernel-os" }
+mynewt-sys = { version = "0.1.0", path = "../mynewt-sys" }
 cty = "0.2.1"
 
 [build-dependencies]

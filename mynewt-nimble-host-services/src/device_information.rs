@@ -17,7 +17,7 @@
 
 pub fn set_model_number(model_number: &'static str) {
     unsafe {
-        let rc = mynewt_nimble_host_services_bindgen::ble_svc_dis_model_number_set(
+        let rc = mynewt_sys::ble_svc_dis_model_number_set(
             model_number.as_ptr(),
         );
         assert!(rc == 0);
@@ -26,7 +26,7 @@ pub fn set_model_number(model_number: &'static str) {
 
 pub fn set_serial_number(serial_number: &'static str) {
     unsafe {
-        let rc = mynewt_nimble_host_services_bindgen::ble_svc_dis_serial_number_set(
+        let rc = mynewt_sys::ble_svc_dis_serial_number_set(
             serial_number.as_ptr(),
         );
         assert!(rc == 0);
@@ -35,7 +35,7 @@ pub fn set_serial_number(serial_number: &'static str) {
 
 pub fn set_firmware_revision(firmware_revision: &'static str) {
     unsafe {
-        let rc = mynewt_nimble_host_services_bindgen::ble_svc_dis_firmware_revision_set(
+        let rc = mynewt_sys::ble_svc_dis_firmware_revision_set(
             firmware_revision.as_ptr(),
         );
         assert!(rc == 0);
@@ -44,7 +44,7 @@ pub fn set_firmware_revision(firmware_revision: &'static str) {
 
 pub fn set_hardware_revision(hardware_revision: &'static str) {
     unsafe {
-        let rc = mynewt_nimble_host_services_bindgen::ble_svc_dis_hardware_revision_set(
+        let rc = mynewt_sys::ble_svc_dis_hardware_revision_set(
             hardware_revision.as_ptr(),
         );
         assert!(rc == 0);
@@ -53,7 +53,7 @@ pub fn set_hardware_revision(hardware_revision: &'static str) {
 
 pub fn set_software_revision(software_revision: &'static str) {
     unsafe {
-        let rc = mynewt_nimble_host_services_bindgen::ble_svc_dis_software_revision_set(
+        let rc = mynewt_sys::ble_svc_dis_software_revision_set(
             software_revision.as_ptr(),
         );
         assert!(rc == 0);
@@ -62,7 +62,7 @@ pub fn set_software_revision(software_revision: &'static str) {
 
 pub fn set_manufacturer_name(manufacturer_name: &'static str) {
     unsafe {
-        let rc = mynewt_nimble_host_services_bindgen::ble_svc_dis_manufacturer_name_set(
+        let rc = mynewt_sys::ble_svc_dis_manufacturer_name_set(
             manufacturer_name.as_ptr(),
         );
         assert!(rc == 0);
@@ -71,7 +71,7 @@ pub fn set_manufacturer_name(manufacturer_name: &'static str) {
 
 pub fn set_system_id(system_id: &'static str) {
     unsafe {
-        let rc = mynewt_nimble_host_services_bindgen::ble_svc_dis_system_id_set(system_id.as_ptr());
+        let rc = mynewt_sys::ble_svc_dis_system_id_set(system_id.as_ptr());
         assert!(rc == 0);
     }
 }

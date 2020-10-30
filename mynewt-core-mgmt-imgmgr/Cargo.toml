@@ -9,6 +9,6 @@ authors = ["Casper Meijn <casper@meijn.net>"]
 edition = "2018"
 
 [dependencies]
-mynewt-core-mgmt-imgmgr-bindgen = { version = "0.1.0", path = "../mynewt-core-mgmt-imgmgr-bindgen" }
+mynewt-sys = { version = "0.1.0", path = "../mynewt-sys" }
 cty = "0.2.1"
 heapless = "0.5.5"

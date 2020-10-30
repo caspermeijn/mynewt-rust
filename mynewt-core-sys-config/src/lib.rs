@@ -19,6 +19,6 @@
 
 pub fn conf_load() {
     unsafe {
-        mynewt_core_sys_config_bindgen::conf_load();
+        mynewt_sys::conf_load();
     }
 }

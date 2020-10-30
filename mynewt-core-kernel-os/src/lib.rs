@@ -20,8 +20,6 @@
 #![feature(const_fn)]
 #![no_std]
 
-extern crate mynewt_core_kernel_os_bindgen;
-
 pub mod callout;
 mod external_hal;
 mod memory;

@@ -22,8 +22,8 @@ use alloc::boxed::Box;
 pub struct Delay {}
 
 pub struct TimeOfDay {
-    time_val: mynewt_core_kernel_os_bindgen::os_timeval,
-    timezone: mynewt_core_kernel_os_bindgen::os_timezone,
+    time_val: mynewt_sys::os_timeval,
+    timezone: mynewt_sys::os_timezone,
 }
 
 impl TimeOfDay {
@@ -41,12 +41,12 @@ impl TimeOfDay {
     /// tz: The structure to put the timezone information into
     pub fn getTimeOfDay() -> Result<TimeOfDay, i32> {
         let mut time = TimeOfDay {
-            time_val: mynewt_core_kernel_os_bindgen::os_timeval::default(),
-            timezone: mynewt_core_kernel_os_bindgen::os_timezone::default(),
+            time_val: mynewt_sys::os_timeval::default(),
+            timezone: mynewt_sys::os_timezone::default(),
         };
 
         let result = unsafe {
-            mynewt_core_kernel_os_bindgen::os_gettimeofday(&mut time.time_val, &mut time.timezone)
+            mynewt_sys::os_gettimeofday(&mut time.time_val, &mut time.timezone)
         };
 
         if result == 0 {
@@ -87,7 +87,7 @@ impl TimeOfDay {
 }
 
 pub struct TimeChangeListener {
-    listener: Option<mynewt_core_kernel_os_bindgen::os_time_change_listener>,
+    listener: Option<mynewt_sys::os_time_change_listener>,
     closure: Option<Box<FnMut() + Send + 'static>>,
 }
 
@@ -106,7 +106,7 @@ impl TimeChangeListener {
     {
         assert!(self.listener.is_none());
 
-        self.listener = Some(mynewt_core_kernel_os_bindgen::os_time_change_listener::default());
+        self.listener = Some(mynewt_sys::os_time_change_listener::default());
         self.closure = Some(Box::new(func));
 
         self.listener.as_mut().unwrap().tcl_fn = Some(Self::callback::<F>);
@@ -114,12 +114,12 @@ impl TimeChangeListener {
             self.closure.as_mut().unwrap().as_mut() as *mut _ as *mut core::ffi::c_void;
 
         unsafe {
-            mynewt_core_kernel_os_bindgen::os_time_change_listen(self.listener.as_mut().unwrap())
+            mynewt_sys::os_time_change_listen(self.listener.as_mut().unwrap())
         };
     }
 
     unsafe extern "C" fn callback<F>(
-        _: *const mynewt_core_kernel_os_bindgen::os_time_change_info,
+        _: *const mynewt_sys::os_time_change_info,
         arg: *mut core::ffi::c_void,
     ) where
         F: FnMut(),

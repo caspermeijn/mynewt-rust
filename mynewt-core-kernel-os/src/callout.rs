@@ -21,7 +21,7 @@ use crate::queue::EventQueue;
 use alloc::boxed::Box;
 
 pub struct Callout {
-    callout: Option<mynewt_core_kernel_os_bindgen::os_callout>,
+    callout: Option<mynewt_sys::os_callout>,
     closure: Option<Box<FnMut() + Send + 'static>>,
 }
 
@@ -38,13 +38,13 @@ impl Callout {
         F: FnMut(),
         F: Send + 'static,
     {
-        self.callout = Some(mynewt_core_kernel_os_bindgen::os_callout::default());
+        self.callout = Some(mynewt_sys::os_callout::default());
         self.closure = Some(Box::new(func));
 
         let arg = self.closure.as_mut().unwrap().as_mut() as *mut _ as *mut core::ffi::c_void;
 
         unsafe {
-            mynewt_core_kernel_os_bindgen::os_callout_init(
+            mynewt_sys::os_callout_init(
                 self.callout.as_mut().unwrap(),
                 event_queue.as_raw_mut(),
                 Some(Callout::callback::<F>),
@@ -58,15 +58,15 @@ impl Callout {
         F: FnMut(),
         F: Send + 'static,
     {
-        self.callout = Some(mynewt_core_kernel_os_bindgen::os_callout::default());
+        self.callout = Some(mynewt_sys::os_callout::default());
         self.closure = Some(Box::new(func));
 
         let arg = self.closure.as_mut().unwrap().as_mut() as *mut _ as *mut core::ffi::c_void;
 
         unsafe {
-            mynewt_core_kernel_os_bindgen::os_callout_init(
+            mynewt_sys::os_callout_init(
                 self.callout.as_mut().unwrap(),
-                mynewt_core_kernel_os_bindgen::os_eventq_dflt_get(),
+                mynewt_sys::os_eventq_dflt_get(),
                 Some(Callout::callback::<F>),
                 arg,
             )
@@ -74,18 +74,18 @@ impl Callout {
     }
 
     pub fn reset(&mut self, delay_ms: u32) {
-        let mut ticks: mynewt_core_kernel_os_bindgen::os_time_t = 0;
+        let mut ticks: mynewt_sys::os_time_t = 0;
         let result =
-            unsafe { mynewt_core_kernel_os_bindgen::os_time_ms_to_ticks(delay_ms, &mut ticks) };
+            unsafe { mynewt_sys::os_time_ms_to_ticks(delay_ms, &mut ticks) };
         assert!(result == 0);
 
         let result = unsafe {
-            mynewt_core_kernel_os_bindgen::os_callout_reset(self.callout.as_mut().unwrap(), ticks)
+            mynewt_sys::os_callout_reset(self.callout.as_mut().unwrap(), ticks)
         };
         assert!(result == 0);
     }
 
-    unsafe extern "C" fn callback<F>(arg: *mut mynewt_core_kernel_os_bindgen::os_event)
+    unsafe extern "C" fn callback<F>(arg: *mut mynewt_sys::os_event)
     where
         F: FnMut(),
         F: Send + 'static,

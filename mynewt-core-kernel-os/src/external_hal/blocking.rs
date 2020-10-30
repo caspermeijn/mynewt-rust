@@ -19,15 +19,15 @@ use embedded_hal::blocking::delay::DelayMs;
 
 impl embedded_hal::blocking::delay::DelayMs<u32> for crate::time::Delay {
     fn delay_ms(&mut self, ms: u32) {
-        let mut ticks: mynewt_core_kernel_os_bindgen::os_time_t = 0;
-        let result = unsafe { mynewt_core_kernel_os_bindgen::os_time_ms_to_ticks(ms, &mut ticks) };
+        let mut ticks: mynewt_sys::os_time_t = 0;
+        let result = unsafe { mynewt_sys::os_time_ms_to_ticks(ms, &mut ticks) };
         assert!(result == 0);
-        unsafe { mynewt_core_kernel_os_bindgen::os_time_delay(ticks) };
+        unsafe { mynewt_sys::os_time_delay(ticks) };
     }
 }
 
 impl embedded_hal::blocking::delay::DelayUs<u32> for crate::time::Delay {
     fn delay_us(&mut self, us: u32) {
-        unsafe { mynewt_core_kernel_os_bindgen::os_cputime_delay_usecs(us) };
+        unsafe { mynewt_sys::os_cputime_delay_usecs(us) };
     }
 }

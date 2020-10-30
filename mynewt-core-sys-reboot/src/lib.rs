@@ -20,10 +20,8 @@
 #![feature(const_fn)]
 #![no_std]
 
-extern crate mynewt_core_sys_reboot_bindgen;
-
 pub fn reboot_start() {
     unsafe {
-        mynewt_core_sys_reboot_bindgen::reboot_start(mynewt_core_hw_hal_bindgen::hal_reset_cause());
+        mynewt_sys::reboot_start(mynewt_sys::hal_reset_cause());
     }
 }

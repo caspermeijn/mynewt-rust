@@ -70,7 +70,7 @@ pub struct OutputPin {
 
 impl OutputPin {
     fn new(gpio: Gpio) -> Result<OutputPin, i32> {
-        let result = unsafe { mynewt_core_hw_hal_bindgen::hal_gpio_init_out(gpio.pin, 0) };
+        let result = unsafe { mynewt_sys::hal_gpio_init_out(gpio.pin, 0) };
         if result == 0 {
             Ok(OutputPin { gpio })
         } else {
@@ -80,7 +80,7 @@ impl OutputPin {
 
     /// Deinitialize the GPIO to revert the previous initialization.
     pub fn deinit(self) -> Result<Gpio, i32> {
-        let result = unsafe { mynewt_core_hw_hal_bindgen::hal_gpio_deinit(self.gpio.pin) };
+        let result = unsafe { mynewt_sys::hal_gpio_deinit(self.gpio.pin) };
         if result == 0 {
             Ok(self.gpio)
         } else {
@@ -91,14 +91,14 @@ impl OutputPin {
     /// Write a value (either high or low) to the specified pin.
     pub fn write(&mut self, value: PinState) {
         unsafe {
-            mynewt_core_hw_hal_bindgen::hal_gpio_write(self.gpio.pin, value.as_i32());
+            mynewt_sys::hal_gpio_write(self.gpio.pin, value.as_i32());
         }
     }
 
     /// Toggles the specified pin.
     /// Returns: current gpio state
     pub fn toggle(&mut self) -> PinState {
-        let result = unsafe { mynewt_core_hw_hal_bindgen::hal_gpio_toggle(self.gpio.pin) };
+        let result = unsafe { mynewt_sys::hal_gpio_toggle(self.gpio.pin) };
         PinState::from(result)
     }
 }

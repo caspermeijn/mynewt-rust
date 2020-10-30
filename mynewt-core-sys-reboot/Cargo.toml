@@ -9,6 +9,5 @@ authors = ["Casper Meijn <casper@meijn.net>"]
 edition = "2018"
 
 [dependencies]
-mynewt-core-sys-reboot-bindgen = { version = "0.1.0", path = "../mynewt-core-sys-reboot-bindgen" }
-mynewt-core-hw-hal-bindgen = { version = "0.1.0", path = "../mynewt-core-hw-hal-bindgen" }
+mynewt-sys = { version = "0.1.0", path = "../mynewt-sys" }
 cty = "0.2.1"

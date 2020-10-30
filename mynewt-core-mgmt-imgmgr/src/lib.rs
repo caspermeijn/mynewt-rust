@@ -23,14 +23,14 @@ use heapless::String;
 
 #[derive(Default)]
 pub struct ImageVersion {
-    raw_version: mynewt_core_mgmt_imgmgr_bindgen::image_version,
+    raw_version: mynewt_sys::image_version,
 }
 
 impl ImageVersion {
     pub fn get_current() -> Option<Self> {
         let mut version = ImageVersion::default();
         let rc =
-            unsafe { mynewt_core_mgmt_imgmgr_bindgen::imgr_my_version(&mut version.raw_version) };
+            unsafe { mynewt_sys::imgr_my_version(&mut version.raw_version) };
 
         if rc == 0 {
             Some(version)

@@ -1,21 +1,21 @@
 /// Data mode of SPI driver, defined by HAL_SPI_MODEn.
 pub enum DataMode {
-    Mode0 = mynewt_core_hw_hal_bindgen::HAL_SPI_MODE0 as isize,
-    Mode1 = mynewt_core_hw_hal_bindgen::HAL_SPI_MODE1 as isize,
-    Mode2 = mynewt_core_hw_hal_bindgen::HAL_SPI_MODE2 as isize,
-    Mode3 = mynewt_core_hw_hal_bindgen::HAL_SPI_MODE3 as isize,
+    Mode0 = mynewt_sys::HAL_SPI_MODE0 as isize,
+    Mode1 = mynewt_sys::HAL_SPI_MODE1 as isize,
+    Mode2 = mynewt_sys::HAL_SPI_MODE2 as isize,
+    Mode3 = mynewt_sys::HAL_SPI_MODE3 as isize,
 }
 
 /// Data order, either HAL_SPI_MSB_FIRST or HAL_SPI_LSB_FIRST.
 pub enum DataOrder {
-    MsbFirst = mynewt_core_hw_hal_bindgen::HAL_SPI_MSB_FIRST as isize,
-    LsbFist = mynewt_core_hw_hal_bindgen::HAL_SPI_LSB_FIRST as isize,
+    MsbFirst = mynewt_sys::HAL_SPI_MSB_FIRST as isize,
+    LsbFist = mynewt_sys::HAL_SPI_LSB_FIRST as isize,
 }
 
 /// The word size of the SPI transaction, either 8-bit or 9-bit.
 pub enum WordSize {
-    Size8bit = mynewt_core_hw_hal_bindgen::HAL_SPI_WORD_SIZE_8BIT as isize,
-    Size9bit = mynewt_core_hw_hal_bindgen::HAL_SPI_WORD_SIZE_9BIT as isize,
+    Size8bit = mynewt_sys::HAL_SPI_WORD_SIZE_8BIT as isize,
+    Size9bit = mynewt_sys::HAL_SPI_WORD_SIZE_9BIT as isize,
 }
 
 /// Baudrate in kHz.
@@ -23,14 +23,14 @@ type Baudrate = u32;
 
 pub struct Spi {
     num: i32,
-    settings: mynewt_core_hw_hal_bindgen::hal_spi_settings,
+    settings: mynewt_sys::hal_spi_settings,
 }
 
 impl Spi {
     pub unsafe fn new(num: i32) -> Spi {
         Spi {
             num,
-            settings: mynewt_core_hw_hal_bindgen::hal_spi_settings {
+            settings: mynewt_sys::hal_spi_settings {
                 baudrate: 0,
                 data_mode: 0,
                 data_order: 0,
@@ -52,7 +52,7 @@ impl Spi {
         self.settings.baudrate = baudrate;
 
         let result =
-            unsafe { mynewt_core_hw_hal_bindgen::hal_spi_config(self.num, &mut self.settings) };
+            unsafe { mynewt_sys::hal_spi_config(self.num, &mut self.settings) };
         if result == 0 {
             Ok(())
         } else {
@@ -61,7 +61,7 @@ impl Spi {
     }
 
     pub fn enable(&self) -> Result<(), i32> {
-        let result = unsafe { mynewt_core_hw_hal_bindgen::hal_spi_enable(self.num) };
+        let result = unsafe { mynewt_sys::hal_spi_enable(self.num) };
         if result == 0 {
             Ok(())
         } else {
@@ -76,7 +76,7 @@ impl Spi {
         let tx_buf = tx_buf.as_ptr() as *mut core::ffi::c_void;
         let rx_buf = rx_buf.as_ptr() as *mut core::ffi::c_void;
         let result =
-            unsafe { mynewt_core_hw_hal_bindgen::hal_spi_txrx(self.num, tx_buf, rx_buf, length) };
+            unsafe { mynewt_sys::hal_spi_txrx(self.num, tx_buf, rx_buf, length) };
         if result == 0 {
             Ok(())
         } else {

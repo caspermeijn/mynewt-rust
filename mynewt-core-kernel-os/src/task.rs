@@ -21,8 +21,8 @@ use alloc::boxed::Box;
 use core::convert::TryInto;
 
 pub struct Task {
-    task: Option<mynewt_core_kernel_os_bindgen::os_task>,
-    stack: [mynewt_core_kernel_os_bindgen::os_stack_t; 4000],
+    task: Option<mynewt_sys::os_task>,
+    stack: [mynewt_sys::os_stack_t; 4000],
     closure: Option<Box<FnMut() + Send + 'static>>,
 }
 
@@ -40,7 +40,7 @@ impl Task {
         F: FnMut(),
         F: Send + 'static,
     {
-        self.task = Some(mynewt_core_kernel_os_bindgen::os_task::default());
+        self.task = Some(mynewt_sys::os_task::default());
         self.closure = Some(Box::new(func));
 
         let task = self.task.as_mut().unwrap();
@@ -51,13 +51,13 @@ impl Task {
         let stack_size = self.stack.len().try_into().unwrap();
 
         let result = unsafe {
-            mynewt_core_kernel_os_bindgen::os_task_init(
+            mynewt_sys::os_task_init(
                 task,
                 name,
                 Some(callback),
                 arg,
                 prio,
-                !0, //TODO: mynewt_core_kernel_os_bindgen::OS_WAIT_FOREVER,
+                !0, //TODO: mynewt_sys::OS_WAIT_FOREVER,
                 stack_bottom,
                 stack_size,
             )

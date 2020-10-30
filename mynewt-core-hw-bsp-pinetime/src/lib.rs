@@ -22,8 +22,6 @@ use mynewt_core_hw_hal::gpio::{Gpio, OutputPin};
 use mynewt_core_hw_hal::spi::{DataMode, DataOrder, WordSize};
 use mynewt_core_kernel_os::time::Delay;
 
-mod binding;
-
 pub struct Bsp {
     pub backlight_low: Option<OutputPin>,
     pub backlight_medium: Option<OutputPin>,
@@ -46,12 +44,12 @@ impl Bsp {
     }
 
     pub fn init(&'static mut self) {
-        let backlight_low_pin = unsafe { Gpio::new(binding::LCD_BACKLIGHT_LOW_PIN as i32) };
-        let backlight_medium_pin = unsafe { Gpio::new(binding::LCD_BACKLIGHT_MED_PIN as i32) };
-        let backlight_high_pin = unsafe { Gpio::new(binding::LCD_BACKLIGHT_HIGH_PIN as i32) };
+        let backlight_low_pin = unsafe { Gpio::new(mynewt_sys::LCD_BACKLIGHT_LOW_PIN as i32) };
+        let backlight_medium_pin = unsafe { Gpio::new(mynewt_sys::LCD_BACKLIGHT_MED_PIN as i32) };
+        let backlight_high_pin = unsafe { Gpio::new(mynewt_sys::LCD_BACKLIGHT_HIGH_PIN as i32) };
 
-        let display_data_command_pin = unsafe { Gpio::new(binding::LCD_WRITE_PIN as i32) };
-        let display_reset_pin = unsafe { Gpio::new(binding::LCD_RESET_PIN as i32) };
+        let display_data_command_pin = unsafe { Gpio::new(mynewt_sys::LCD_WRITE_PIN as i32) };
+        let display_reset_pin = unsafe { Gpio::new(mynewt_sys::LCD_RESET_PIN as i32) };
         let mut display_spi = unsafe { SpiNode::new("spidisplay\0") };
 
         display_spi.open();
