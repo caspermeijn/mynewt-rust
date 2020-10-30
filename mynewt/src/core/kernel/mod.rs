@@ -15,4 +15,5 @@
  * limitations under the License.
  */
 
+#[cfg(mynewt_package="@apache-mynewt-core/kernel/os")]
 pub use mynewt_core_kernel_os as os;
