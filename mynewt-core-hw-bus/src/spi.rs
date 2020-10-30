@@ -1,7 +1,6 @@
 use alloc::boxed::Box;
 use core::marker::PhantomPinned;
 use core::pin::Pin;
-use cortex_m_semihosting::hprintln;
 use mynewt_core_hw_hal::spi::DataMode;
 use mynewt_core_hw_hal::spi::DataOrder;
 

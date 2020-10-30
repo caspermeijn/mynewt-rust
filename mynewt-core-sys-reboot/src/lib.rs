@@ -15,9 +15,6 @@
  * limitations under the License.
  */
 
-#![feature(never_type)]
-#![feature(alloc_error_handler)]
-#![feature(const_fn)]
 #![no_std]
 
 pub fn reboot_start() {
