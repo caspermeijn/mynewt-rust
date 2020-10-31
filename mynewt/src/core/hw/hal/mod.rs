@@ -15,6 +15,6 @@
  * limitations under the License.
  */
 
-mod external_hal;
+mod embedded_hal;
 pub mod gpio;
 pub mod spi;

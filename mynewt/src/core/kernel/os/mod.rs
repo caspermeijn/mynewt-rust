@@ -17,7 +17,7 @@
 
 pub mod callout;
 pub mod cputime;
-mod external_hal;
+mod embedded_hal;
 mod memory;
 pub mod queue;
 pub mod task;

@@ -17,5 +17,5 @@
 
 extern crate alloc;
 
-mod external_hal;
+mod embedded_hal;
 pub mod spi;
