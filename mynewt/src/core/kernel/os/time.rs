@@ -19,6 +19,30 @@ extern crate alloc;
 
 use alloc::boxed::Box;
 
+pub struct Ticks {
+  ticks: mynewt_sys::os_time_t,
+}
+
+impl Ticks {
+    pub fn from_milliseconds(ms: u32) -> Ticks {
+        let mut ticks: mynewt_sys::os_time_t = 0;
+        let result = unsafe { mynewt_sys::os_time_ms_to_ticks(ms, &mut ticks) };
+        assert!(result == 0);
+        Ticks {
+            ticks,
+        }
+    }
+}
+
+pub fn delay_ticks(ticks: Ticks) {
+    unsafe { mynewt_sys::os_time_delay(ticks.ticks) };
+}
+
+pub fn delay_milliseconds(ms: u32) {
+    let ticks = Ticks::from_milliseconds(ms);
+    delay_ticks(ticks)
+}
+
 pub struct Delay {}
 
 pub struct TimeOfDay {

@@ -19,10 +19,7 @@ use crate::core::kernel::os::time::Delay;
 
 impl embedded_hal::blocking::delay::DelayMs<u32> for Delay {
     fn delay_ms(&mut self, ms: u32) {
-        let mut ticks: mynewt_sys::os_time_t = 0;
-        let result = unsafe { mynewt_sys::os_time_ms_to_ticks(ms, &mut ticks) };
-        assert!(result == 0);
-        unsafe { mynewt_sys::os_time_delay(ticks) };
+        crate::core::kernel::os::time::delay_milliseconds(ms);
     }
 }
 
