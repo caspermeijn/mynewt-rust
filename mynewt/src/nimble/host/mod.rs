@@ -15,6 +15,6 @@
  * limitations under the License.
  */
 
-#[cfg(mynewt_package="@apache-mynewt-nimble/nimble/host")]
+#[cfg(mynewt_package = "@apache-mynewt-nimble/nimble/host")]
 pub mod advertiser;
 pub mod services;

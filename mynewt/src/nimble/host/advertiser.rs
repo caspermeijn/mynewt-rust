@@ -37,9 +37,7 @@ impl BleAdvertiser {
     pub fn start() {
         unsafe { assert!(mynewt_sys::ble_hs_cfg.sync_cb == None) };
 
-        unsafe {
-            mynewt_sys::ble_hs_cfg.sync_cb = Some(BleAdvertiser::bleprph_on_sync)
-        };
+        unsafe { mynewt_sys::ble_hs_cfg.sync_cb = Some(BleAdvertiser::bleprph_on_sync) };
     }
 
     fn bleprph_advertise() {
@@ -54,8 +52,8 @@ impl BleAdvertiser {
         let rc = unsafe { mynewt_sys::ble_hs_id_infer_auto(0, own_addr_type) };
         assert!(rc == 0);
 
-        fields.flags = mynewt_sys::BLE_HS_ADV_F_DISC_GEN as u8
-            | mynewt_sys::BLE_HS_ADV_F_BREDR_UNSUP as u8;
+        fields.flags =
+            mynewt_sys::BLE_HS_ADV_F_DISC_GEN as u8 | mynewt_sys::BLE_HS_ADV_F_BREDR_UNSUP as u8;
 
         fields.set_tx_pwr_lvl_is_present(1);
         fields.tx_pwr_lvl = mynewt_sys::BLE_HS_ADV_TX_PWR_LVL_AUTO as i8;
@@ -70,12 +68,8 @@ impl BleAdvertiser {
         assert!(rc == 0);
 
         // /* Begin advertising. */
-        adv_params.conn_mode = mynewt_sys::BLE_GAP_CONN_MODE_UND
-            .try_into()
-            .unwrap();
-        adv_params.disc_mode = mynewt_sys::BLE_GAP_DISC_MODE_GEN
-            .try_into()
-            .unwrap();
+        adv_params.conn_mode = mynewt_sys::BLE_GAP_CONN_MODE_UND.try_into().unwrap();
+        adv_params.disc_mode = mynewt_sys::BLE_GAP_DISC_MODE_GEN.try_into().unwrap();
 
         let rc = unsafe {
             mynewt_sys::ble_gap_adv_start(

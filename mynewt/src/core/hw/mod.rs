@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-#[cfg(mynewt_package="@apache-mynewt-core/hw/bus")]
-pub mod bus;
-#[cfg(mynewt_package="@apache-mynewt-core/hw/hal")]
-pub mod hal;
 pub mod bsp;
+#[cfg(mynewt_package = "@apache-mynewt-core/hw/bus")]
+pub mod bus;
+#[cfg(mynewt_package = "@apache-mynewt-core/hw/hal")]
+pub mod hal;

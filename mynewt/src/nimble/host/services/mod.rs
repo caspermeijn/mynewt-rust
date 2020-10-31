@@ -15,5 +15,5 @@
  * limitations under the License.
  */
 
-#[cfg(mynewt_package="@apache-mynewt-nimble/nimble/host/services/dis")]
+#[cfg(mynewt_package = "@apache-mynewt-nimble/nimble/host/services/dis")]
 pub mod device_information;

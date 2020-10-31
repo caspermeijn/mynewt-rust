@@ -45,9 +45,7 @@ impl TimeOfDay {
             timezone: mynewt_sys::os_timezone::default(),
         };
 
-        let result = unsafe {
-            mynewt_sys::os_gettimeofday(&mut time.time_val, &mut time.timezone)
-        };
+        let result = unsafe { mynewt_sys::os_gettimeofday(&mut time.time_val, &mut time.timezone) };
 
         if result == 0 {
             Ok(time)
@@ -113,9 +111,7 @@ impl TimeChangeListener {
         self.listener.as_mut().unwrap().tcl_arg =
             self.closure.as_mut().unwrap().as_mut() as *mut _ as *mut core::ffi::c_void;
 
-        unsafe {
-            mynewt_sys::os_time_change_listen(self.listener.as_mut().unwrap())
-        };
+        unsafe { mynewt_sys::os_time_change_listen(self.listener.as_mut().unwrap()) };
     }
 
     unsafe extern "C" fn callback<F>(

@@ -27,8 +27,7 @@ pub struct ImageVersion {
 impl ImageVersion {
     pub fn get_current() -> Option<Self> {
         let mut version = ImageVersion::default();
-        let rc =
-            unsafe { mynewt_sys::imgr_my_version(&mut version.raw_version) };
+        let rc = unsafe { mynewt_sys::imgr_my_version(&mut version.raw_version) };
 
         if rc == 0 {
             Some(version)
@@ -47,7 +46,8 @@ impl From<ImageVersion> for String<U12> {
             version.raw_version.iv_major,
             version.raw_version.iv_minor,
             version.raw_version.iv_revision
-        ).unwrap();
+        )
+        .unwrap();
         version_string
     }
 }

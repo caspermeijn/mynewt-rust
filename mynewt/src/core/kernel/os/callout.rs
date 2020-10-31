@@ -75,13 +75,10 @@ impl Callout {
 
     pub fn reset(&mut self, delay_ms: u32) {
         let mut ticks: mynewt_sys::os_time_t = 0;
-        let result =
-            unsafe { mynewt_sys::os_time_ms_to_ticks(delay_ms, &mut ticks) };
+        let result = unsafe { mynewt_sys::os_time_ms_to_ticks(delay_ms, &mut ticks) };
         assert!(result == 0);
 
-        let result = unsafe {
-            mynewt_sys::os_callout_reset(self.callout.as_mut().unwrap(), ticks)
-        };
+        let result = unsafe { mynewt_sys::os_callout_reset(self.callout.as_mut().unwrap(), ticks) };
         assert!(result == 0);
     }
 

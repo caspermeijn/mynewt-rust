@@ -18,9 +18,7 @@
 pub fn loop_default_queue() -> ! {
     loop {
         unsafe {
-            mynewt_sys::os_eventq_run(
-                mynewt_sys::os_eventq_dflt_get(),
-            );
+            mynewt_sys::os_eventq_run(mynewt_sys::os_eventq_dflt_get());
         }
     }
 }
@@ -37,9 +35,7 @@ impl EventQueue {
     pub fn init(&'static mut self) {
         assert!(self.event_queue.is_none());
         self.event_queue = Some(mynewt_sys::os_eventq::default());
-        unsafe {
-            mynewt_sys::os_eventq_init(self.event_queue.as_mut().unwrap())
-        };
+        unsafe { mynewt_sys::os_eventq_init(self.event_queue.as_mut().unwrap()) };
     }
 
     pub fn run(&'static mut self) {
@@ -47,9 +43,7 @@ impl EventQueue {
         unsafe { mynewt_sys::os_eventq_run(self.event_queue.as_mut().unwrap()) };
     }
 
-    pub unsafe fn as_raw_mut(
-        &'static mut self,
-    ) -> &'static mut mynewt_sys::os_eventq {
+    pub unsafe fn as_raw_mut(&'static mut self) -> &'static mut mynewt_sys::os_eventq {
         self.event_queue.as_mut().unwrap()
     }
 }

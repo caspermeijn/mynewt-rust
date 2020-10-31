@@ -15,5 +15,5 @@
  * limitations under the License.
  */
 
-#[cfg(mynewt_package="@apache-mynewt-core/mgmt/imgmgr")]
+#[cfg(mynewt_package = "@apache-mynewt-core/mgmt/imgmgr")]
 pub mod imgmgr;

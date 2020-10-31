@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#[cfg(mynewt_package="@apache-mynewt-core/sys/config")]
+#[cfg(mynewt_package = "@apache-mynewt-core/sys/config")]
 pub mod config;
-#[cfg(mynewt_package="@apache-mynewt-core/sys/reboot")]
+#[cfg(mynewt_package = "@apache-mynewt-core/sys/reboot")]
 pub mod reboot;

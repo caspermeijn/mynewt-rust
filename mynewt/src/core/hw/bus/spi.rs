@@ -33,13 +33,8 @@ impl SpiNode {
     }
 
     pub fn open(&mut self) {
-        let os_dev = unsafe {
-            mynewt_sys::os_dev_open(
-                self.dev_name.as_ptr(),
-                0,
-                core::ptr::null_mut(),
-            )
-        };
+        let os_dev =
+            unsafe { mynewt_sys::os_dev_open(self.dev_name.as_ptr(), 0, core::ptr::null_mut()) };
         assert!(os_dev != core::ptr::null_mut());
 
         self.os_dev = os_dev;
@@ -50,8 +45,7 @@ impl SpiNode {
 
         let timeout = mynewt_sys::MYNEWT_VAL_BUS_DEFAULT_TRANSACTION_TIMEOUT_MS;
         let mut ticks: mynewt_sys::os_time_t = 0;
-        let result =
-            unsafe { mynewt_sys::os_time_ms_to_ticks(timeout, &mut ticks) };
+        let result = unsafe { mynewt_sys::os_time_ms_to_ticks(timeout, &mut ticks) };
         assert!(result == 0);
 
         let result = unsafe {

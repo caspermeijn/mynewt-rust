@@ -73,8 +73,8 @@ fn main() {
     let package_names = package_names.split(":");
 
     let header_files = package_names
-        .map(|name| {PathBuf::new().join("src").join(name).join("wrapper.h")})
-        .filter(|path| { path.exists() })
+        .map(|name| PathBuf::new().join("src").join(name).join("wrapper.h"))
+        .filter(|path| path.exists())
         .collect();
 
     let result = generate_paths(header_files);

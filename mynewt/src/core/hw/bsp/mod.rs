@@ -15,5 +15,5 @@
  * limitations under the License.
  */
 
-#[cfg(mynewt_package="@apache-mynewt-core/hw/bsp/pinetime")]
+#[cfg(mynewt_package = "@apache-mynewt-core/hw/bsp/pinetime")]
 pub mod pinetime;
