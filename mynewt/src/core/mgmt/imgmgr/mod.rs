@@ -47,7 +47,7 @@ impl From<ImageVersion> for String<U12> {
             version.raw_version.iv_major,
             version.raw_version.iv_minor,
             version.raw_version.iv_revision
-        );
+        ).unwrap();
         version_string
     }
 }

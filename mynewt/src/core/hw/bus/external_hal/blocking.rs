@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-use super::embedded_hal::blocking::spi::Write;
 use crate::core::hw::bus::spi::SpiNode;
 
 impl embedded_hal::blocking::spi::Write<u8> for SpiNode {

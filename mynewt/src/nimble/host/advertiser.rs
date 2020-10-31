@@ -92,9 +92,9 @@ impl BleAdvertiser {
 
     unsafe extern "C" fn bleprph_gap_event(
         event: *mut mynewt_sys::ble_gap_event,
-        arg: *mut cty::c_void,
+        _arg: *mut cty::c_void,
     ) -> i32 {
-        let event = (unsafe { *event });
+        let event = *event;
         match event.type_ as u32 {
             mynewt_sys::BLE_GAP_EVENT_CONNECT => {
                 if event.__bindgen_anon_1.connect.status != 0 {
@@ -104,10 +104,6 @@ impl BleAdvertiser {
             }
             mynewt_sys::BLE_GAP_EVENT_DISCONNECT => {
                 /* Connection terminated; resume advertising. */
-                BleAdvertiser::bleprph_advertise();
-            }
-            mynewt_sys::BLE_GAP_EVENT_DISCONNECT => {
-                // advertise complete; reason=%d", event->adv_complete.reason);
                 BleAdvertiser::bleprph_advertise();
             }
             _ => {}

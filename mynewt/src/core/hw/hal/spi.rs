@@ -61,7 +61,7 @@ impl Spi {
         data_mode: DataMode,
         data_order: DataOrder,
         word_size: WordSize,
-        baudrate: u32,
+        baudrate: Baudrate,
     ) -> Result<(), i32> {
         self.settings.data_mode = data_mode as u8;
         self.settings.data_order = data_order as u8;

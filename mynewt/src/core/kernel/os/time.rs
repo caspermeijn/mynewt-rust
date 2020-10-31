@@ -88,7 +88,7 @@ impl TimeOfDay {
 
 pub struct TimeChangeListener {
     listener: Option<mynewt_sys::os_time_change_listener>,
-    closure: Option<Box<FnMut() + Send + 'static>>,
+    closure: Option<Box<dyn FnMut() + Send + 'static>>,
 }
 
 impl TimeChangeListener {
@@ -126,7 +126,7 @@ impl TimeChangeListener {
         F: Send + 'static,
     {
         let func_ptr = arg as *mut F;
-        let func = unsafe { &mut *func_ptr };
+        let func = &mut (*func_ptr);
         func();
     }
 }

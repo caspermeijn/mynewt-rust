@@ -22,7 +22,7 @@ use alloc::boxed::Box;
 
 pub struct Callout {
     callout: Option<mynewt_sys::os_callout>,
-    closure: Option<Box<FnMut() + Send + 'static>>,
+    closure: Option<Box<dyn FnMut() + Send + 'static>>,
 }
 
 impl Callout {
@@ -91,7 +91,7 @@ impl Callout {
         F: Send + 'static,
     {
         let func_ptr = (*arg).ev_arg as *mut F;
-        let func = unsafe { &mut *func_ptr };
+        let func = &mut *func_ptr;
         func();
     }
 }

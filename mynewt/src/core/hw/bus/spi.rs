@@ -15,14 +15,6 @@
  * limitations under the License.
  */
 
-extern crate alloc;
-
-use alloc::boxed::Box;
-use core::marker::PhantomPinned;
-use core::pin::Pin;
-use crate::core::hw::hal::spi::DataMode;
-use crate::core::hw::hal::spi::DataOrder;
-
 pub struct SpiNode {
     dev_name: &'static str,
     os_dev: *mut mynewt_sys::os_dev,

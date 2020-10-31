@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-use embedded_hal::blocking::delay::DelayMs;
 use crate::core::kernel::os::time::Delay;
 
 impl embedded_hal::blocking::delay::DelayMs<u32> for Delay {

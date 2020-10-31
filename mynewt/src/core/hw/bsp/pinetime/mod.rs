@@ -17,8 +17,6 @@
 
 use crate::core::hw::bus::spi::SpiNode;
 use crate::core::hw::hal::gpio::{Gpio, OutputPin};
-use crate::core::hw::hal::spi::{DataMode, DataOrder, WordSize};
-use crate::core::kernel::os::time::Delay;
 
 pub struct Bsp {
     pub backlight_low: Option<OutputPin>,
