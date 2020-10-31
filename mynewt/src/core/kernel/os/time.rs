@@ -34,6 +34,12 @@ impl Ticks {
     }
 }
 
+impl From<Ticks> for u32 {
+    fn from(ticks: Ticks) -> Self {
+        ticks.ticks
+    }
+}
+
 pub fn delay_ticks(ticks: Ticks) {
     unsafe { mynewt_sys::os_time_delay(ticks.ticks) };
 }
