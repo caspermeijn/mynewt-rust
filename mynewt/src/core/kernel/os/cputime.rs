@@ -15,10 +15,6 @@
  * limitations under the License.
  */
 
-pub mod callout;
-pub mod cputime;
-mod external_hal;
-mod memory;
-pub mod queue;
-pub mod task;
-pub mod time;
+pub fn delay_microseconds(us: u32) {
+    unsafe { mynewt_sys::os_cputime_delay_usecs(us) };
+}

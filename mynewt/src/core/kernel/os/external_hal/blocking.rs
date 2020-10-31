@@ -25,6 +25,6 @@ impl embedded_hal::blocking::delay::DelayMs<u32> for Delay {
 
 impl embedded_hal::blocking::delay::DelayUs<u32> for Delay {
     fn delay_us(&mut self, us: u32) {
-        unsafe { mynewt_sys::os_cputime_delay_usecs(us) };
+        crate::core::kernel::os::cputime::delay_microseconds(us);
     }
 }
