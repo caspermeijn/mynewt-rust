@@ -17,29 +17,35 @@
 
 use crate::core::hw::bus::spi::SpiNode;
 use crate::core::hw::hal::gpio::{Gpio, OutputPin};
+use spin::Mutex;
+
+static IS_TAKEN: Mutex<bool> = Mutex::new(false);
 
 pub struct Bsp {
-    pub backlight_low: Option<OutputPin>,
-    pub backlight_medium: Option<OutputPin>,
-    pub backlight_high: Option<OutputPin>,
-    pub display_data_command: Option<OutputPin>,
-    pub display_reset: Option<OutputPin>,
-    pub display_spi: Option<SpiNode>,
+    pub backlight_low: OutputPin,
+    pub backlight_medium: OutputPin,
+    pub backlight_high: OutputPin,
+    pub display_data_command: OutputPin,
+    pub display_reset: OutputPin,
+    pub display_spi: SpiNode,
 }
 
 impl Bsp {
-    pub const fn new() -> Bsp {
-        Bsp {
-            backlight_low: None,
-            backlight_medium: None,
-            backlight_high: None,
-            display_data_command: None,
-            display_reset: None,
-            display_spi: None,
+    pub fn take() -> Option<Bsp> {
+        let is_taken = IS_TAKEN.lock();
+        if !*is_taken {
+            Some(Self::init())
+        } else {
+            None
         }
     }
 
-    pub fn init(&'static mut self) {
+    pub unsafe fn steal() -> Bsp {
+        *(IS_TAKEN.lock()) = true;
+        Self::init()
+    }
+
+    fn init() -> Bsp {
         let backlight_low_pin = unsafe { Gpio::new(mynewt_sys::LCD_BACKLIGHT_LOW_PIN as i32) };
         let backlight_medium_pin = unsafe { Gpio::new(mynewt_sys::LCD_BACKLIGHT_MED_PIN as i32) };
         let backlight_high_pin = unsafe { Gpio::new(mynewt_sys::LCD_BACKLIGHT_HIGH_PIN as i32) };
@@ -50,11 +56,13 @@ impl Bsp {
 
         display_spi.open();
 
-        self.backlight_low = Some(backlight_low_pin.init_as_output().unwrap());
-        self.backlight_medium = Some(backlight_medium_pin.init_as_output().unwrap());
-        self.backlight_high = Some(backlight_high_pin.init_as_output().unwrap());
-        self.display_data_command = Some(display_data_command_pin.init_as_output().unwrap());
-        self.display_reset = Some(display_reset_pin.init_as_output().unwrap());
-        self.display_spi = Some(display_spi);
+        Bsp {
+            backlight_low: backlight_low_pin.init_as_output().unwrap(),
+            backlight_medium: backlight_medium_pin.init_as_output().unwrap(),
+            backlight_high: backlight_high_pin.init_as_output().unwrap(),
+            display_data_command: display_data_command_pin.init_as_output().unwrap(),
+            display_reset: display_reset_pin.init_as_output().unwrap(),
+            display_spi,
+        }
     }
 }
