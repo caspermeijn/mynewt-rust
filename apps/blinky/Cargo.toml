@@ -23,6 +23,7 @@ edition = "2018"
 
 [dependencies]
 panic-halt = "0.2.0"
+mynewt = { version = "0.1.0", path = "../../mynewt" }
 mynewt-sys = { version = "0.1.0", path = "../../mynewt-sys" }
 
 [lib]

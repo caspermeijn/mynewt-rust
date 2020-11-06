@@ -33,5 +33,5 @@ else
   exit 1
 fi
 
-cargo build --target="${TARGET}" --target-dir="${MYNEWT_PKG_BIN_DIR}"
+cargo +nightly build --target="${TARGET}" --target-dir="${MYNEWT_PKG_BIN_DIR}"
 cp "${MYNEWT_PKG_BIN_DIR}"/${TARGET}/debug/*.a "${MYNEWT_PKG_BIN_ARCHIVE}"

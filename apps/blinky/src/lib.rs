@@ -19,16 +19,16 @@
 
 extern crate panic_halt;
 
-// Define a safe wrapper for os_time_delay
-fn os_time_delay_ms(ms: u32) {
-    let mut ticks: mynewt_sys::os_time_t = 0;
-    let result = unsafe { mynewt_sys::os_time_ms_to_ticks(ms, &mut ticks) };
-    assert!(result == 0);
-    unsafe { mynewt_sys::os_time_delay(ticks) };
-}
+use mynewt::core::kernel::os::time::delay_milliseconds;
+use mynewt::core::hw::hal::gpio::PinState;
+use mynewt::core::hw::bsp::generic::Bsp;
 
 #[no_mangle]
 pub extern "C" fn main() {
+
+    let bsp = Bsp::take().unwrap();
+    let mut led_blink = bsp.led_blink;
+
     /* Initialize all packages. */
     unsafe {
         mynewt_sys::sysinit_start();
@@ -37,17 +37,13 @@ pub extern "C" fn main() {
     }
 
     /* Turn on the LED */
-    unsafe {
-        mynewt_sys::hal_gpio_init_out(mynewt_sys::LED_BLINK_PIN as i32, 1);
-    }
+    led_blink.write(PinState::High);
 
     loop {
         /* Wait one second */
-        os_time_delay_ms(1000);
+        delay_milliseconds(1000);
 
         /* Toggle the LED */
-        unsafe {
-            mynewt_sys::hal_gpio_toggle(mynewt_sys::LED_BLINK_PIN as i32);
-        }
+        led_blink.toggle();
     }
 }
