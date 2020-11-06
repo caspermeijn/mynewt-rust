@@ -13,3 +13,5 @@ cty = "0.2.1"
 embedded-hal = { version = "0.2.4", features = ["unproven"] }
 heapless = "0.5.6"
 mynewt-sys = { version = "0.1.0", path = "../mynewt-sys" }
+spin = "0.7.0"
+

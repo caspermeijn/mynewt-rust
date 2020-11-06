@@ -16,4 +16,7 @@
  */
 
 #[cfg(mynewt_package = "@apache-mynewt-core/hw/bsp/pinetime")]
+#[cfg(mynewt_package = "@apache-mynewt-core/hw/bus")]
 pub mod pinetime;
+
+pub mod generic;
