@@ -43,7 +43,9 @@ impl SpiNode {
     pub fn write(&mut self, tx_buf: &[u8]) -> Result<(), i32> {
         assert!(self.os_dev != core::ptr::null_mut());
 
-        let timeout = crate::core::kernel::os::time::Ticks::from_milliseconds(mynewt_sys::MYNEWT_VAL_BUS_DEFAULT_TRANSACTION_TIMEOUT_MS);
+        let timeout = crate::core::kernel::os::time::Ticks::from_milliseconds(
+            mynewt_sys::MYNEWT_VAL_BUS_DEFAULT_TRANSACTION_TIMEOUT_MS,
+        );
 
         let result = unsafe {
             mynewt_sys::bus_node_write(

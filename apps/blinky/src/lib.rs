@@ -19,13 +19,12 @@
 
 extern crate panic_halt;
 
-use mynewt::core::kernel::os::time::delay_milliseconds;
-use mynewt::core::hw::hal::gpio::PinState;
 use mynewt::core::hw::bsp::generic::Bsp;
+use mynewt::core::hw::hal::gpio::PinState;
+use mynewt::core::kernel::os::time::delay_milliseconds;
 
 #[no_mangle]
 pub extern "C" fn main() {
-
     let bsp = Bsp::take().unwrap();
     let mut led_blink = bsp.led_blink;
 
