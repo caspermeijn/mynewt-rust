@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-use core::fmt::Write;
-use heapless::consts::*;
-use heapless::String;
+extern crate alloc;
+
+use alloc::format;
+use alloc::string::String;
 
 #[derive(Default)]
 pub struct ImageVersion {
@@ -37,17 +38,13 @@ impl ImageVersion {
     }
 }
 
-impl From<ImageVersion> for String<U12> {
+impl From<ImageVersion> for String {
     fn from(version: ImageVersion) -> Self {
-        let mut version_string = Self::default();
-        write!(
-            version_string,
+        format!(
             "{}.{}.{}",
             version.raw_version.iv_major,
             version.raw_version.iv_minor,
             version.raw_version.iv_revision
         )
-        .unwrap();
-        version_string
     }
 }
