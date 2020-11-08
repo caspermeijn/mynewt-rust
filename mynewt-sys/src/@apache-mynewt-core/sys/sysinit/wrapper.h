@@ -1,0 +1,1 @@
+void shim_sysinit();

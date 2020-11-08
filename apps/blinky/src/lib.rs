@@ -30,9 +30,7 @@ pub extern "C" fn main() {
 
     /* Initialize all packages. */
     unsafe {
-        mynewt_sys::sysinit_start();
-        mynewt_sys::sysinit_app();
-        mynewt_sys::sysinit_end();
+        mynewt_sys::shim_sysinit();
     }
 
     /* Turn on the LED */

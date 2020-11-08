@@ -67,17 +67,51 @@ pub fn generate_paths(header_paths: Vec<PathBuf>) -> Result<(), String> {
     Ok(())
 }
 
+pub fn compile_shims(shim_paths: Vec<PathBuf>) -> Result<(), cc::Error> {
+    let mut builder = cc::Build::new();
+    for shim in shim_paths {
+        builder.file(shim);
+    }
+
+    // If available, set the include directories as mynewt would do
+    if let Ok(include_path_list) = env::var("MYNEWT_INCLUDE_PATH") {
+        for include_path in include_path_list.split(":") {
+            builder.include(include_path);
+        }
+    }
+    // If available, set the CFLAGS as mynewt would do
+    if let Ok(cflag_list) = env::var("MYNEWT_CFLAGS") {
+        for cflag in cflag_list.split(" ") {
+            builder.flag(cflag);
+        }
+    }
+
+    builder.try_compile("shims")
+}
+
 fn main() {
     println!("cargo:rerun-if-env-changed=MYNEWT_PACKAGES");
     let package_names = env::var("MYNEWT_PACKAGES").unwrap();
     let package_names = package_names.split(":");
 
     let header_files = package_names
+        .clone()
         .map(|name| PathBuf::new().join("src").join(name).join("wrapper.h"))
         .filter(|path| path.exists())
         .collect();
 
     let result = generate_paths(header_files);
+    if let Err(e) = result {
+        eprintln!("{}", e);
+        std::process::exit(1);
+    };
+
+    let shim_files = package_names
+        .map(|name| PathBuf::new().join("src").join(name).join("shim.c"))
+        .filter(|path| path.exists())
+        .collect();
+
+    let result = compile_shims(shim_files);
     if let Err(e) = result {
         eprintln!("{}", e);
         std::process::exit(1);
