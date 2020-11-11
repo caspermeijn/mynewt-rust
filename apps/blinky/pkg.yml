@@ -23,7 +23,7 @@ pkg.homepage: "https://github.com/caspermeijn/mynewt-rust"
 pkg.keywords:
 
 pkg.pre_build_cmds:
-    './cargo_build.sh': 1
+    '../../scripts/cargo_build.sh': 1
 
 pkg.deps:
     - "@apache-mynewt-core/kernel/os"
