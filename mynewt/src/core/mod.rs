@@ -19,3 +19,4 @@ pub mod hw;
 pub mod kernel;
 pub mod mgmt;
 pub mod sys;
+pub use mynewt_macros::entry;

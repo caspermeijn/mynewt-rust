@@ -1,0 +1,16 @@
+# Copyright (C) 2020 Casper Meijn <casper@meijn.net>
+#
+# SPDX-License-Identifier: CC0-1.0
+
+[package]
+name = "mynewt-macros"
+version = "0.1.0"
+authors = ["Casper Meijn <casper@meijn.net>"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "1.0", features = ["extra-traits", "full"] }
+quote = "1.0"

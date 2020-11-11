@@ -19,19 +19,16 @@
 
 extern crate panic_halt;
 
+use mynewt::core::entry;
 use mynewt::core::hw::bsp::generic::Bsp;
 use mynewt::core::hw::hal::gpio::PinState;
 use mynewt::core::kernel::os::time::delay_milliseconds;
 
-#[no_mangle]
-pub extern "C" fn main() {
+#[entry]
+fn main() -> ! {
     let bsp = Bsp::take().unwrap();
-    let mut led_blink = bsp.led_blink;
 
-    /* Initialize all packages. */
-    unsafe {
-        mynewt_sys::shim_sysinit();
-    }
+    let mut led_blink = bsp.led_blink;
 
     /* Turn on the LED */
     led_blink.write(PinState::High);
