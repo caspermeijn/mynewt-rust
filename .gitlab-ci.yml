@@ -6,8 +6,9 @@ build:
   stage: build
   image: registry.gitlab.com/caspermeijn/docker-images/pinetime-build:latest
   script:
+    - dnf install -y glibc-devel.i686 glibc-devel
     - newt upgrade
-    - newt build all
+    - newt build blinky-sim blinky-pinetime
   cache:
     paths:
       - repos
