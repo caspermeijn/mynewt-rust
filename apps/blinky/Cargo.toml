@@ -28,3 +28,9 @@ mynewt-sys = { version = "0.1.0", path = "../../mynewt-sys" }
 
 [lib]
 crate-type = ["staticlib"]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"

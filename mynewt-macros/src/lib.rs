@@ -24,7 +24,8 @@ use syn::{
     Visibility,
 };
 
-/// Marks function as main entrypoint. The system is already initialized using sysinit().
+/// Marks function as main entrypoint. The system is already initialized using sysinit() and the
+/// simulator is initialized with dummy arguments.
 /// The function must have signature `[unsafe] fn() -> !`.
 #[proc_macro_attribute]
 pub fn entry(args: TokenStream, input: TokenStream) -> TokenStream {
@@ -68,6 +69,11 @@ pub fn entry(args: TokenStream, input: TokenStream) -> TokenStream {
         #[doc(hidden)]
         #[export_name = "main"]
         pub extern "C" fn #tramp_ident() -> ! {
+            /* Initialize simulator. */
+            unsafe {
+                mynewt_sys::shim_sim_init();
+            }
+
             /* Initialize all packages. */
             unsafe {
                 mynewt_sys::shim_sysinit();

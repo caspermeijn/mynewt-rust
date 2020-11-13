@@ -28,6 +28,8 @@ elif [[ ${MYNEWT_VAL_ARCH_NAME} == '"cortex_m4"' || ${MYNEWT_VAL_ARCH_NAME} == '
   else
     TARGET="thumbv7em-none-eabi"
   fi
+elif [[ ${MYNEWT_VAL_ARCH_NAME} == '"sim"' ]]; then
+  TARGET="i686-unknown-linux-gnu"
 else
   echo "The ARCH_NAME ${MYNEWT_VAL_ARCH_NAME} is not supported"
   exit 1

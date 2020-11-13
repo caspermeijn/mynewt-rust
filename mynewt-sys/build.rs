@@ -41,7 +41,11 @@ pub fn generate_paths(header_paths: Vec<PathBuf>) -> Result<(), String> {
             .output()
             .expect("failed to execute gcc");
         assert!(cc_output.status.success());
-        let sysroot_path = str::from_utf8(&cc_output.stdout).unwrap().trim();
+        let mut sysroot_path = str::from_utf8(&cc_output.stdout).unwrap().trim();
+        if sysroot_path.is_empty() {
+            // If no sysroot is found, then we probably are building the sim.
+            sysroot_path = "/usr";
+        }
         builder = builder.clang_arg(format!("--sysroot={}", sysroot_path));
     }
 
