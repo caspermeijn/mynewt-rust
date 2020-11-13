@@ -1,0 +1,42 @@
+# Copyright (C) 2020 Casper Meijn <casper@meijn.net>
+#
+# SPDX-License-Identifier: CC0-1.0
+
+build:
+  stage: build
+  image: registry.gitlab.com/caspermeijn/docker-images/pinetime-build:latest
+  script:
+    - newt upgrade
+    - newt build all
+  cache:
+    paths:
+      - repos
+
+reuse:
+  stage: build
+  image:
+    name: fsfe/reuse:latest
+    entrypoint: [""]
+  script:
+    - reuse lint
+  needs: []
+
+conventional-commits:
+  stage: build
+  image: registry.gitlab.com/caspermeijn/docker-images/convco:latest
+  before_script:
+    - apt update && apt install -y git
+  script:
+    - git fetch origin
+    - convco check origin/master..HEAD
+  needs: []
+
+rustfmt:
+  stage: build
+  image: registry.gitlab.com/caspermeijn/docker-images/pinetime-build:latest
+  before_script:
+    - rustup component add rustfmt
+  script:
+    - cd apps/blinky && cargo fmt --all -- --check
+  needs: []
+

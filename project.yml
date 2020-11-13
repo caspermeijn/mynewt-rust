@@ -1,0 +1,14 @@
+# Copyright (C) 2020 Casper Meijn <casper@meijn.net>
+#
+# SPDX-License-Identifier: CC0-1.0
+
+project.name: "mynewt-rust"
+
+project.repositories:
+    - apache-mynewt-core
+
+repository.apache-mynewt-core:
+    type: github
+    vers: 424507b45ad0cdb69668f5bc7fd51d86afd2a70d-commit
+    user: caspermeijn
+    repo: mynewt-core
