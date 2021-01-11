@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+#[cfg(mynewt_package = "@apache-mynewt-core/hw/battery")]
+pub mod battery;
 pub mod bsp;
 #[cfg(mynewt_package = "@apache-mynewt-core/hw/bus")]
 pub mod bus;

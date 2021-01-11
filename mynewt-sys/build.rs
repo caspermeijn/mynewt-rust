@@ -28,6 +28,7 @@ pub fn generate_paths(header_paths: Vec<PathBuf>) -> Result<(), String> {
         .use_core()
         .derive_default(true)
         .ctypes_prefix("cty")
+        .clang_arg("-fshort-enums")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks));
     for header_path in header_paths {
         builder = builder.header(header_path.to_str().unwrap());
