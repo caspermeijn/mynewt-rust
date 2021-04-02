@@ -65,6 +65,60 @@ pub enum PropertyType {
     CycleCount = mynewt_sys::battery_property_type_t_BATTERY_PROP_CYCLE_COUNT as isize,
 }
 
+pub enum BatteryStatus {
+    Unknown = mynewt_sys::battery_status_t_BATTERY_STATUS_UNKNOWN as isize,
+    /// Charger connected, battery charging */
+    Charging = mynewt_sys::battery_status_t_BATTERY_STATUS_CHARGING as isize,
+    /// Charger not connected, battery discharging */
+    Discharging = mynewt_sys::battery_status_t_BATTERY_STATUS_DISCHARGING as isize,
+    /// Charger connected, not charging */
+    NotCharging = mynewt_sys::battery_status_t_BATTERY_STATUS_NOT_CHARGING as isize,
+    /// Charger connected, not charging - battery full
+    Full = mynewt_sys::battery_status_t_BATTERY_STATUS_FULL as isize,
+}
+
+impl From<mynewt_sys::battery_status_t> for BatteryStatus {
+    fn from(status: mynewt_sys::battery_status_t) -> Self {
+        match status {
+            mynewt_sys::battery_status_t_BATTERY_STATUS_UNKNOWN => BatteryStatus::Unknown,
+            mynewt_sys::battery_status_t_BATTERY_STATUS_CHARGING => BatteryStatus::Charging,
+            mynewt_sys::battery_status_t_BATTERY_STATUS_DISCHARGING => BatteryStatus::Discharging,
+            mynewt_sys::battery_status_t_BATTERY_STATUS_NOT_CHARGING => BatteryStatus::NotCharging,
+            mynewt_sys::battery_status_t_BATTERY_STATUS_FULL => BatteryStatus::Full,
+            _ => panic!(),
+        }
+    }
+}
+
+pub enum CapacityLevel {
+    Unknown = mynewt_sys::battery_capacity_level_t_BATTERY_CAPACITY_LEVEL_UNKNOWN as isize,
+    Critical = mynewt_sys::battery_capacity_level_t_BATTERY_CAPACITY_LEVEL_CRITICAL as isize,
+    Low = mynewt_sys::battery_capacity_level_t_BATTERY_CAPACITY_LEVEL_LOW as isize,
+    Normal = mynewt_sys::battery_capacity_level_t_BATTERY_CAPACITY_LEVEL_NORMAL as isize,
+    High = mynewt_sys::battery_capacity_level_t_BATTERY_CAPACITY_LEVEL_HIGH as isize,
+    Full = mynewt_sys::battery_capacity_level_t_BATTERY_CAPACITY_LEVEL_FULL as isize,
+}
+
+impl From<mynewt_sys::battery_capacity_level_t> for CapacityLevel {
+    fn from(capacity_level: mynewt_sys::battery_capacity_level_t) -> Self {
+        match capacity_level {
+            mynewt_sys::battery_capacity_level_t_BATTERY_CAPACITY_LEVEL_UNKNOWN => {
+                CapacityLevel::Unknown
+            }
+            mynewt_sys::battery_capacity_level_t_BATTERY_CAPACITY_LEVEL_CRITICAL => {
+                CapacityLevel::Critical
+            }
+            mynewt_sys::battery_capacity_level_t_BATTERY_CAPACITY_LEVEL_LOW => CapacityLevel::Low,
+            mynewt_sys::battery_capacity_level_t_BATTERY_CAPACITY_LEVEL_NORMAL => {
+                CapacityLevel::Normal
+            }
+            mynewt_sys::battery_capacity_level_t_BATTERY_CAPACITY_LEVEL_HIGH => CapacityLevel::High,
+            mynewt_sys::battery_capacity_level_t_BATTERY_CAPACITY_LEVEL_FULL => CapacityLevel::Full,
+            _ => panic!(),
+        }
+    }
+}
+
 pub enum PropertyValue {
     None,
     /* in mV */
@@ -83,8 +137,8 @@ pub enum PropertyValue {
     Time(u32),
     /* Number of charge cycles */
     CycleCount(u16),
-    Status(mynewt_sys::battery_status_t),
-    CapacityLevel(mynewt_sys::battery_capacity_level_t),
+    Status(BatteryStatus),
+    CapacityLevel(CapacityLevel),
 }
 
 pub struct Property {
@@ -219,11 +273,13 @@ impl Property {
         if self.is_valid() {
             Some(match self.get_type() {
                 PropertyType::None => PropertyValue::None,
-                PropertyType::Status => {
-                    PropertyValue::Status(unsafe { property.bp_value.bpv_status })
-                }
+                PropertyType::Status => PropertyValue::Status(BatteryStatus::from(unsafe {
+                    property.bp_value.bpv_status
+                })),
                 PropertyType::CapacityLevel => {
-                    PropertyValue::CapacityLevel(unsafe { property.bp_value.bpv_capacity_level })
+                    PropertyValue::CapacityLevel(CapacityLevel::from(unsafe {
+                        property.bp_value.bpv_capacity_level
+                    }))
                 }
                 PropertyType::Capacity => {
                     PropertyValue::Capacity(unsafe { property.bp_value.bpv_capacity })
