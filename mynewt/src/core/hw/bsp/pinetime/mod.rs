@@ -17,14 +17,41 @@
 
 use crate::core::hw::bus::spi::SpiNode;
 use crate::core::hw::hal::gpio::{Gpio, OutputPin};
+use embedded_hal::digital::v2::OutputPin as _;
 use spin::Mutex;
 
 static IS_TAKEN: Mutex<bool> = Mutex::new(false);
 
-pub struct Bsp {
+pub struct Backlight {
     pub backlight_low: OutputPin,
     pub backlight_medium: OutputPin,
     pub backlight_high: OutputPin,
+}
+
+impl Backlight {
+    pub fn set_percentage(&mut self, percentage: u8) {
+        if percentage == 0 {
+            self.backlight_low.set_high().unwrap();
+            self.backlight_medium.set_high().unwrap();
+            self.backlight_high.set_high().unwrap();
+        } else if percentage <= 33 {
+            self.backlight_low.set_low().unwrap();
+            self.backlight_medium.set_high().unwrap();
+            self.backlight_high.set_high().unwrap();
+        } else if percentage <= 66 {
+            self.backlight_low.set_low().unwrap();
+            self.backlight_medium.set_low().unwrap();
+            self.backlight_high.set_high().unwrap();
+        } else {
+            self.backlight_low.set_low().unwrap();
+            self.backlight_medium.set_low().unwrap();
+            self.backlight_high.set_low().unwrap();
+        }
+    }
+}
+
+pub struct Bsp {
+    pub backlight: Backlight,
     pub display_data_command: OutputPin,
     pub display_reset: OutputPin,
     pub display_spi: SpiNode,
@@ -57,9 +84,11 @@ impl Bsp {
         display_spi.open();
 
         Bsp {
-            backlight_low: backlight_low_pin.init_as_output().unwrap(),
-            backlight_medium: backlight_medium_pin.init_as_output().unwrap(),
-            backlight_high: backlight_high_pin.init_as_output().unwrap(),
+            backlight: Backlight {
+                backlight_low: backlight_low_pin.init_as_output().unwrap(),
+                backlight_medium: backlight_medium_pin.init_as_output().unwrap(),
+                backlight_high: backlight_high_pin.init_as_output().unwrap(),
+            },
             display_data_command: display_data_command_pin.init_as_output().unwrap(),
             display_reset: display_reset_pin.init_as_output().unwrap(),
             display_spi,
