@@ -18,10 +18,10 @@
 extern crate proc_macro;
 
 use proc_macro::TokenStream;
+use proc_macro2::Span;
 use quote::quote;
 use syn::{
-    export::Span, parse, parse_macro_input, spanned::Spanned, Ident, ItemFn, ReturnType, Type,
-    Visibility,
+    parse, parse_macro_input, spanned::Spanned, Ident, ItemFn, ReturnType, Type, Visibility,
 };
 
 /// Marks function as main entrypoint. The system is already initialized using sysinit() and the
