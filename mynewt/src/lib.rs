@@ -17,7 +17,7 @@
 
 #![feature(never_type)]
 #![feature(alloc_error_handler)]
-#![feature(const_fn)]
+#![feature(const_fn_trait_bound)]
 #![no_std]
 
 pub mod core;
