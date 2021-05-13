@@ -121,21 +121,21 @@ impl From<mynewt_sys::battery_capacity_level_t> for CapacityLevel {
 
 pub enum PropertyValue {
     None,
-    /* in mV */
+    /// in milli Volt
     Voltage(i32),
-    /* in mA */
+    /// in milli Ampère
     Current(i32),
-    /* in mAh */
+    /// in milli Ampère hour
     Capacity(u32),
-    /* SOC in % 0..100 */
+    /// SOC in percent (0%..100%)
     StateOfCharge(u8),
-    /* SOH in % 0..100 */
+    /// SOH in percent (0%..100%)
     StateOfHealth(u8),
-    /* Temperature in deg C */
+    /// Temperature in degrees Celsius
     Temperature(f32),
-    /* Time in s */
+    /// Time in seconds
     Time(u32),
-    /* Number of charge cycles */
+    /// Number of charge cycles
     CycleCount(u16),
     Status(BatteryStatus),
     CapacityLevel(CapacityLevel),
