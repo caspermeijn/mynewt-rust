@@ -20,5 +20,7 @@ pub mod battery;
 pub mod bsp;
 #[cfg(mynewt_package = "@apache-mynewt-core/hw/bus")]
 pub mod bus;
+#[cfg(mynewt_package = "@apache-mynewt-core/hw/charge-control")]
+pub mod charge_control;
 #[cfg(mynewt_package = "@apache-mynewt-core/hw/hal")]
 pub mod hal;
